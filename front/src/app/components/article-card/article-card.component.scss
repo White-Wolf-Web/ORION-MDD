@@ -1,0 +1,57 @@
+.article-card {
+  width: 359px;
+  height: 180px;
+  background: #f5f5f5;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  color: #000000;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 8px;
+ 
+}
+
+.articleCardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.articleCardInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .articleCardDate,
+  .articleCardAuthor {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+  }
+
+  .articleCardDate {
+    width: 137px;
+    height: 24px;
+  }
+}
+
+.articleCardContent {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; 
+  -webkit-box-orient: vertical;
+}

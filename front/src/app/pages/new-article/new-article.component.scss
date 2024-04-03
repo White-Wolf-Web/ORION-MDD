@@ -1,0 +1,60 @@
+.new-article-container {
+  width: 100%;
+  padding: 10px;
+  align-items: center;
+}
+
+.new-article-back-arrow {
+  position: absolute;
+}
+
+.new-article-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 29px;
+}
+
+.triple-input {
+  width: 80%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: auto;
+}
+
+.new-article-input {
+  width: 100%;
+  min-width: 280px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid var(--primary-color);
+}
+
+.content {
+  min-height: 212px;
+  padding-bottom: 180px;
+}
+
+.mat-form-field {
+  width: 281px;
+  margin: auto;
+}
+
+.new-article-create-button {
+ display: flex;
+justify-content: center;
+}
+
+@media (max-width: 360px) {
+  .new-article-title {
+    margin-top: 40px;
+    text-align: center;
+  }
+
+  .triple-input {
+    gap: 0;
+  }
+}

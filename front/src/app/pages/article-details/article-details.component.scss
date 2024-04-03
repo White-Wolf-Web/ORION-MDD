@@ -1,0 +1,127 @@
+.article-details-container {
+  max-width: 837px;
+  margin: auto;
+  padding: 30px;
+}
+
+.back-arrow-and-title {
+  display: flex;
+}
+
+.date-author-theme {
+  display: flex;
+  margin: 10px 0 10px 65px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  gap: 27px;
+}
+
+.article-details-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+}
+
+.horizontal-line {
+  height: 2px;
+  width: 95%;
+  background-color: #000000;
+  margin: 30px auto;
+}
+
+.article-details-commentary {
+  display: flex;
+  width: 90%;
+  margin: auto;
+  justify-content: space-around;
+}
+
+.contents-of-comments {
+  width: 450px;
+  min-height: 100px;
+  background-color: lightgray;
+  border-radius: 16px;
+  padding: 5px 0 0 5px;
+  margin-bottom: 30px;
+}
+
+.article-details-textarea {
+  width: 570px;
+  height: 120px;
+  border-radius: 16px;
+  border: 3px solid black;
+  padding-left: 5px;
+  padding-top: 5px;
+  color: black;
+}
+
+.textarea-container textarea {
+  border: 0;
+}
+
+.write-send-comments {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sending-arrow {
+  width: 43px;
+  height: 43px;
+  margin-left: 30px;
+}
+
+@media (max-width: 768px) {
+  .article-details-commentary {
+    flex-direction: column-reverse;
+  }
+
+  .article-details-username {
+    margin: 5px 10px 15px auto;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .contents-of-comments {
+    width: 100%;
+    background-color: white;
+    padding: 5px 0 0 5px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 600px) {
+  .sending-arrow {
+    position: absolute;
+    right: 17%;
+  }
+}
+
+@media (max-width: 480px) {
+    .article-details-textarea {
+        max-width: 300px;
+      }
+
+      .textarea-container {
+        max-width: 300px;
+      }
+.ng-untouched  {
+    max-width: 287px;
+
+}
+      .write-send-comments {
+        width: 100%;
+        justify-content: center;
+      }
+  }
+
+@media (max-width: 360px) {
+  .date-author-theme {
+    justify-content: space-around;
+    margin: 10px 0;
+    gap: 0;
+  }
+}

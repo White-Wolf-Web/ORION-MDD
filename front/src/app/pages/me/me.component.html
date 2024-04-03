@@ -1,0 +1,42 @@
+<app-header [showNav]="true"></app-header>
+<main>
+  <h2 class="me-title">Profil utilisateur</h2>
+
+  <form [formGroup]="userForm" (ngSubmit)="save()">
+    <div>
+      <app-general-input
+        label="Username"
+        placeholder="Enter your username"
+        formControlName="username"
+      >
+      </app-general-input>
+      <app-general-input
+        label="Email"
+        placeholder="email@email.fr"
+        formControlName="email"
+      >
+      </app-general-input>
+    </div>
+    <div class="me-button">
+      <app-button
+        buttonText="Sauvegarder"
+        buttonType="primary"
+        [disabled]="!userForm.valid"
+      ></app-button>
+      <button type="button" (click)="logout()" class="me-logout-button">
+        Se déconnecter
+      </button>
+    </div>
+  </form>
+
+  <div class="horizontal-line"></div>
+  <h2 class="me-title">Abonnements</h2>
+  <div class="me-theme-subscription">
+    <ng-container *ngFor="let subscription of subscriptions">
+      <app-theme-card
+        [cardTitle]="subscription.title"
+        [cardContent]="subscription.description"
+      ></app-theme-card>
+    </ng-container>
+  </div>
+</main>

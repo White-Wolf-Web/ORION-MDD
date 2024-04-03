@@ -1,0 +1,20 @@
+.themesContainer {
+    max-width: 837px;
+    margin: auto;
+    padding: 30px;
+  }
+  
+  
+  .themesCardsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+  
+  @media (max-width: 830px) {
+    .themesCardsContainer {
+      justify-content: center;
+    }
+  }
+  

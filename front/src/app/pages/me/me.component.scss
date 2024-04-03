@@ -1,0 +1,43 @@
+.me-title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.me-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.me-logout-button {
+  background-color: white;
+  border: 0;
+  color: #a40f0f;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  cursor: pointer;
+}
+
+.horizontal-line {
+  height: 2px;
+  width: 95%;
+  background-color: #000000;
+  margin: 30px auto;
+}
+
+.me-theme-subscription {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .me-theme-subscription {
+    flex-direction: column;
+    align-items: center;
+  }
+}

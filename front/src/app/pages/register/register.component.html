@@ -1,0 +1,41 @@
+<app-header [showNav]="false" class="registerHeader"></app-header>
+<main>
+<app-arrow-back></app-arrow-back>
+
+<img src="/assets/logo_p6.png" alt="logo" class="logo" />
+<h2 class="registerTitle">Inscription</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="inputs-container">
+  <div class="input-field">
+    <label for="username">Nom d’utilisateur</label>
+    <input type="text" formControlName="username" placeholder="Entrez votre nom d’utilisateur">
+    <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="error">
+      <div *ngIf="username?.errors?.['required']">Le nom d'utilisateur est requis.</div>
+    </div>
+  </div>
+
+  <div class="input-field">
+    <label for="email">Adresse e-mail</label>
+    <input type="email" formControlName="email" placeholder="Entrez votre adresse e-mail">
+    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error">
+      <div *ngIf="email?.errors?.['required']">L'adresse e-mail est requise.</div>
+      <div *ngIf="email?.errors?.['email']">L'adresse e-mail n'est pas valide.</div>
+
+    </div>
+  </div>
+
+  <div class="input-field">
+    <label for="password">Mot de passe</label>
+    <input type="password" formControlName="password" placeholder="Entrez votre mot de passe">
+    <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error">
+      <div *ngIf="password?.errors?.['required']">Le mot de passe est requis.</div>
+      <div *ngIf="password?.errors?.['minlength']">Le mot de passe doit comporter au moins 6 caractères.</div>
+  </div>
+  </div>
+  <app-button
+    buttonText="S’inscrire"
+    buttonType="primary"
+    class="registerButton"
+  ></app-button>
+</form>
+</main>
