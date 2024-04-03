@@ -2,9 +2,10 @@ package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
+import lombok.Data;
 import java.util.Date;
 
+@Data
 public class TopicDto {
     private Long id;
 
