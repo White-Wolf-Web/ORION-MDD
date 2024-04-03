@@ -1,9 +1,6 @@
 package com.openclassrooms.mddapi.service.serviceImpl;
 
-import com.openclassrooms.mddapi.dto.AuthLoginDto;
-import com.openclassrooms.mddapi.dto.AuthRegisterDto;
-import com.openclassrooms.mddapi.dto.AuthResponseDto;
-import com.openclassrooms.mddapi.dto.UserDto;
+import com.openclassrooms.mddapi.dto.*;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.JwtService;
@@ -101,7 +98,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto findUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return convertToUserDto(user);
+    }
+
+    @Override
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with email: " + email));
         return convertToUserDto(user);
     }
 
@@ -116,5 +121,33 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return convertToUserDto(user);
     }
+
+    @Override
+    public UserDto updateUserById(Long id, UserUpdateDto userUpdateDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // Mettez à jour les champs nécessaires de l'utilisateur
+        // Par exemple, si vous voulez permettre la mise à jour du nom et de l'email :
+        user.setName(userUpdateDto.getName());
+        user.setEmail(userUpdateDto.getEmail());
+        // Assurez-vous d'ajouter d'autres champs de mise à jour ici
+
+        // Sauvegardez l'utilisateur mis à jour
+        User updatedUser = userRepository.save(user);
+
+        // Convertissez l'utilisateur mis à jour en DTO et retournez-le
+        return convertToUserDto(updatedUser);
+    }
+
+
+    @Override
+    public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        userRepository.deleteById(id);
+    }
+
 }
 
