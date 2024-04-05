@@ -1,9 +1,12 @@
 package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.util.Date;
 
+
+@Data
 public class CommentDto {
     private Long id;
 

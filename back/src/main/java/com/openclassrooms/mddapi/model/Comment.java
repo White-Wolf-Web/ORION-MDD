@@ -23,6 +23,10 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @NotNull(message = "Le contenu ne peut pas être vide")
+    @Column(name = "content", length = 2000)
+    private String content;
+
     // Un commentaire appartient à un post mais un post peut avoir plusieurs commentaires
     @ManyToOne
     @JoinColumn(name = "post_id")
