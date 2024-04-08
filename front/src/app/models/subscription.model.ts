@@ -1,6 +1,5 @@
 export interface Subscription {
-    id: string;
-    title: string;
-    description: string;
-  }
-  
+  id: number;
+  title: string;
+  description: string;
+}

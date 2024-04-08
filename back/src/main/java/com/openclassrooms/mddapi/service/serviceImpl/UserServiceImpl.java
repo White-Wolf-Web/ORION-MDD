@@ -140,6 +140,19 @@ public class UserServiceImpl implements UserService {
         return convertToUserDto(updatedUser);
     }
 
+    @Override
+    public UserDto updateCurrentUser(Authentication authentication, UserUpdateDto userUpdateDto) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        user.setName(userUpdateDto.getName());
+        user.setEmail(userUpdateDto.getEmail());
+        // Mettez à jour d'autres champs ici selon les besoins
+
+        User updatedUser = userRepository.save(user);
+        return convertToUserDto(updatedUser);
+    }
 
     @Override
     public void deleteUserById(Long id) {

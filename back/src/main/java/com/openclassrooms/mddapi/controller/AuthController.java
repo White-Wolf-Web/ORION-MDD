@@ -151,4 +151,22 @@ public ResponseEntity<?> test (@Valid @RequestBody AuthLoginDto authLoginDto, Er
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
     }
+
+    @PutMapping("/me")
+    public ResponseEntity<?> updateCurrentUser(Authentication authentication, @Valid @RequestBody UserUpdateDto userUpdateDto) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized: Authentication is required.");
+        }
+
+        try {
+            UserDto updatedUserDto = userService.updateCurrentUser(authentication, userUpdateDto);
+            return ResponseEntity.ok(updatedUserDto);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: User not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        }
+    }
+
+
 }

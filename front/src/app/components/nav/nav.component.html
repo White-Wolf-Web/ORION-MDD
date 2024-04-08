@@ -10,8 +10,11 @@
     Thèmes
   </div>
   <div class="nav-profile">
-    <img src="/assets/iconUser.png" alt="Icon user" />
+    <div class="nav-link" [ngClass]="{ active: activeLink === 'me' }" (click)="navigateToMe()">
+      <img src="/assets/iconUser.png" alt="Icon user" />
+    </div>
   </div>
+  
 </div>
 
 <mat-sidenav-container class="sidenav-container" [class.open]="isSidenavOpen">

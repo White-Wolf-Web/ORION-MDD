@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { UserService } from 'src/app/services/user/user.service';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-me',
@@ -12,18 +12,19 @@ import { Subscription } from 'src/app/models/subscription.model';
   styleUrls: ['./me.component.scss'],
 })
 export class MeComponent implements OnInit {
-  userForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-  });
+  userForm: FormGroup;
   subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private userService: UserService,
     private subscriptionService: SubscriptionService
-  ) {}
+  ) {
+    this.userForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+    });
+  }
 
   ngOnInit(): void {
     this.loadUserData();
@@ -41,46 +42,40 @@ export class MeComponent implements OnInit {
   }
 
   loadUserData(): void {
-    this.userService.getCurrentUser().subscribe({
-      next: (user: { username: string; email: string }) => {
+    this.authService.getCurrentUser().subscribe({
+      next: (user: User) => {
         this.userForm.patchValue({
-          username: user.username,
+          username: user.name,
           email: user.email,
         });
       },
-      error: (error: any) =>
-        console.error(
-          'Erreur lors du chargement des données utilisateur',
-          error
-        ),
+      error: (error) => console.error('Error loading user data', error),
     });
   }
 
-  get username(): FormControl {
+  get usernameControl(): FormControl {
     return this.userForm.get('username') as FormControl;
   }
-
-  get email(): FormControl {
+  
+  get emailControl(): FormControl {
     return this.userForm.get('email') as FormControl;
   }
+  
 
   save(): void {
     if (this.userForm.valid) {
-      this.userService
-        .updateUser({
-          username: this.userForm.value.username!,
-          email: this.userForm.value.email!,
-        })
-        .subscribe({
-          next: (response) => {
-            console.log('Mise à jour réussie', response);
-          },
-          error: (error) => {
-            console.error('Erreur lors de la mise à jour', error);
-          },
-        });
+      const userData: Partial<User> = {
+        name: this.userForm.value.username, // Assurez-vous que ceci correspond à la clé attendue par le backend
+        email: this.userForm.value.email,
+      };
+      
+      this.authService.updateUser(userData).subscribe({
+        next: () => console.log('User updated successfully'),
+        error: (error) => console.error('Error updating user', error),
+      });
     }
   }
+  
 
   logout(): void {
     this.authService.logout();

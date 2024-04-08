@@ -3,9 +3,13 @@
   <div class="themesCardsContainer">
     <ng-container *ngFor="let theme of themes">
       <app-theme-card
+      *ngFor="let theme of themes"
         [cardTitle]="theme.title"
         [cardContent]="theme.content"
-      ></app-theme-card>
+        [unsubscribe]="theme.subscribed || false"
+        (actionClick)="handleAction(theme, $event)">
+      </app-theme-card>
     </ng-container>
+    
   </div>
 </div>

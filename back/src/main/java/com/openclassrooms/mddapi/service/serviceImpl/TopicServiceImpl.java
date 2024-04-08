@@ -27,23 +27,20 @@ public class TopicServiceImpl implements TopicService {
     public TopicServiceImpl(TopicRepository topicRepository, UserRepository userRepository, SubscriptionRepository subscriptionRepository, ModelMapper modelMapper) {
         this.topicRepository = topicRepository;
         this.userRepository = userRepository;
-        this.subscriptionRepository = subscriptionRepository; // Et cette ligne
+        this.subscriptionRepository = subscriptionRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<TopicDto> findAllTopics() {
         List<Topic> topics = topicRepository.findAll();
-        List<TopicDto> topicDtos = topics.stream()
-                .map(topic -> modelMapper.map(topic, TopicDto.class))
-                .collect(Collectors.toList());
-      //  topicDtos.forEach(topicDto -> System.out.println(topicDto)); // Logger pour le débogage
+        List<TopicDto> topicDtos = topics.stream().map(topic -> modelMapper.map(topic, TopicDto.class)).collect(Collectors.toList());
+        //  topicDtos.forEach(topicDto -> System.out.println(topicDto)); // Logger pour le débogage
         topicDtos.forEach(topicDto -> System.out.println("TopicDto: " + topicDto.getTitle() + ", " + topicDto.getContent()));
 
 
         return topicDtos;
     }
-
 
 
     @Override

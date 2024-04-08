@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +12,7 @@ export class NavComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isSidenavOpen = false;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -26,5 +27,9 @@ export class NavComponent implements OnInit {
   setActiveLink(link: string): void {
     this.activeLink = link;
     this.sidenav.close();
+  }
+
+  navigateToMe(): void {
+    this.router.navigate(['/me']);
   }
 }

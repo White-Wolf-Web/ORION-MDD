@@ -2,7 +2,8 @@
   <h2 class="theme-card-title">{{ cardTitle }}</h2>
   <p class="theme-card-content">{{ cardContent }}</p>
   <div class="button-container">
-    <app-button buttonText="S’abonner"></app-button>
+    <app-button [buttonText]="unsubscribe ? 'Se désabonner' : 'S’abonner'" (click)="onButtonClick()"></app-button>
+
   </div>
 </div>
 

@@ -10,7 +10,6 @@ export class GeneralInputComponent implements OnInit {
   @Input() control!: FormControl;
   @Input() label: string = '';
   @Input() placeholder: string = '';
-  value: string = '';
   constructor() {}
 
   ngOnInit(): void {}
