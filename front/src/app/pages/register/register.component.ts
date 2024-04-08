@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.authService
         .register({
-          username: this.registerForm.value.username!,
+          name: this.registerForm.value.username!,
           email: this.registerForm.value.email!,
           password: this.registerForm.value.password!,
         })
