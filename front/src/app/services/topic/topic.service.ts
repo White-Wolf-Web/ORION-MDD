@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, tap, catchError, throwError } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Topic } from 'src/app/models/topic.model'; 
-import { AuthService } from '../auth/auth.service'; 
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +10,7 @@ import { AuthService } from '../auth/auth.service';
 export class TopicsService {
   private apiUrl = 'http://localhost:8080/api/topics';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
   getTopics(): Observable<Topic[]> {
     return this.httpClient.get<Topic[]>(`${this.apiUrl}`);
@@ -24,5 +22,17 @@ export class TopicsService {
 
   unsubscribeFromTopic(topicId: number): Observable<any> {
     return this.httpClient.post(`${this.apiUrl}/unsubscribe/${topicId}`, {});
+  }
+
+  getSubscribedTopics(): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${this.apiUrl}/me/subscribed`);
+  }
+  
+  getSubscribedTopicsForUser(): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${this.apiUrl}/me/subscribed`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
   }
 }

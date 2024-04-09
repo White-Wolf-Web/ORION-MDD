@@ -5,6 +5,9 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { SubscriptionService } from 'src/app/services/subscription/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { User } from 'src/app/models/user.model';
+import { Topic } from 'src/app/models/topic.model';
+import { TopicsService } from 'src/app/services/topic/topic.service';
+import { TopicsStateService } from 'src/app/services/topic/topics-state.service';
 
 @Component({
   selector: 'app-me',
@@ -14,11 +17,13 @@ import { User } from 'src/app/models/user.model';
 export class MeComponent implements OnInit {
   userForm: FormGroup;
   subscriptions: Subscription[] = [];
+  subscribedTopics: Topic[] = [];
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private subscriptionService: SubscriptionService
+    private topicsService: TopicsService,
+    private topicsStateService: TopicsStateService
   ) {
     this.userForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
@@ -28,17 +33,7 @@ export class MeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.loadSubscriptions();
-  }
-
-  loadSubscriptions(): void {
-    this.subscriptionService.getSubscriptionsForUser().subscribe({
-      next: (subscriptions: Subscription[]) => {
-        this.subscriptions = subscriptions;
-      },
-      error: (error: any) =>
-        console.error('Erreur lors du chargement des abonnements', error),
-    });
+    this.loadSubscribedTopics();
   }
 
   loadUserData(): void {
@@ -56,26 +51,33 @@ export class MeComponent implements OnInit {
   get usernameControl(): FormControl {
     return this.userForm.get('username') as FormControl;
   }
-  
+
   get emailControl(): FormControl {
     return this.userForm.get('email') as FormControl;
   }
-  
 
+  loadSubscribedTopics(): void {
+    this.topicsService.getSubscribedTopicsForUser().subscribe({
+      next: (topics: Topic[]) => {
+        this.subscribedTopics = topics;
+        this.topicsStateService.saveTopicsState(topics); // Mettez à jour l'état global des sujets abonnés
+      },
+      error: (error) => console.error('Error loading subscribed topics', error),
+    });
+  }
   save(): void {
     if (this.userForm.valid) {
       const userData: Partial<User> = {
         name: this.userForm.value.username, // Assurez-vous que ceci correspond à la clé attendue par le backend
         email: this.userForm.value.email,
       };
-      
+
       this.authService.updateUser(userData).subscribe({
         next: () => console.log('User updated successfully'),
         error: (error) => console.error('Error updating user', error),
       });
     }
   }
-  
 
   logout(): void {
     this.authService.logout();

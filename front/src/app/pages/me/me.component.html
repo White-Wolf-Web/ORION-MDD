@@ -32,11 +32,13 @@
   <div class="horizontal-line"></div>
   <h2 class="me-title">Abonnements</h2>
   <div class="me-theme-subscription">
-    <ng-container *ngFor="let subscription of subscriptions">
+    <ng-container *ngFor="let topic of subscribedTopics">
       <app-topic-card
-        [cardTitle]="subscription.title"
-        [cardContent]="subscription.description"
-      ></app-topic-card>
+        [cardTitle]="topic.title"
+        [cardContent]="topic.content"
+        [subscribed]="topic.subscribed">
+      </app-topic-card>
     </ng-container>
+    
   </div>
 </main>

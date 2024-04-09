@@ -72,5 +72,16 @@ public class TopicServiceImpl implements TopicService {
         subscriptionRepository.delete(subscription);
     }
 
+    @Override
+    public List<TopicDto> findSubscribedTopicsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        List<Subscription> subscriptions = subscriptionRepository.findByUserId(user.getId());
+
+        return subscriptions.stream()
+                .map(subscription -> modelMapper.map(subscription.getTopic(), TopicDto.class))
+                .collect(Collectors.toList());
+    }
 
 }

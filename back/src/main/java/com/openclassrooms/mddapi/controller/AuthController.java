@@ -88,24 +88,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials.");
         }
     }
-/*
-    @PostMapping("/bonjour")
-public ResponseEntity<?> test (@Valid @RequestBody AuthLoginDto authLoginDto, Errors errors ){
-        if (errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto("error"));
-        }
-        try {
-            AuthResponseDto authenticationResponse = userService.loginUser(authLoginDto);  // Tente de connecter l'utilisateur et de récupérer la réponse d'authentification.
-            return ResponseEntity.ok(authenticationResponse);                              // Retourne la réponse d'authentification si la connexion est réussie.
-        } catch (
-                AuthenticationException e) {                                              // Gère les exceptions d'authentification.
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials.");
-        }
-
-    //  return   ResponseEntity.status(HttpStatus.OK).body("bonjour Postman");
-}
-*/
 
 
 
