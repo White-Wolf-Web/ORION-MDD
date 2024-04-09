@@ -8,14 +8,15 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-theme-card',
-  templateUrl: './theme-card.component.html',
-  styleUrls: ['./theme-card.component.scss'],
+  selector: 'app-topic-card',
+  templateUrl: './topic-card.component.html',
+  styleUrls: ['./topic-card.component.scss'],
 })
-export class ThemeCardComponent implements OnInit {
+export class TopicCardComponent implements OnInit {
   @Input() cardTitle!: string;
   @Input() cardContent!: string;
   @Input() unsubscribe: boolean = false;
+  
 
   @Output() actionClick = new EventEmitter<boolean>();     // Pour créer l'action d'abonnement ou du désabonnement
 

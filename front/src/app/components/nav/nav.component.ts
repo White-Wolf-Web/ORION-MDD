@@ -32,4 +32,12 @@ export class NavComponent implements OnInit {
   navigateToMe(): void {
     this.router.navigate(['/me']);
   }
+
+  navigateToArticles(): void {
+    this.router.navigate(['/articles']); 
+  }
+  
+  navigateToTopics(): void {
+    this.router.navigate(['/topics']);
+  }
 }

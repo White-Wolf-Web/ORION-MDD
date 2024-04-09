@@ -1,0 +1,14 @@
+<app-header [showNav]="true"></app-header>
+<div class="themesContainer">
+  <div class="themesCardsContainer">
+    <ng-container *ngFor="let topic of topics">
+     <!--  <app-topic-card *ngFor="let topic of (topics$ | async)" [topic]="topic" (subscribe)="onSubscribe(topic.id)" (unsubscribe)="onUnsubscribe(topic.id)"></app-topic-card>-->
+     <app-topic-card
+        [cardTitle]="topic.title"
+        [cardContent]="topic.content"
+        [unsubscribe]="topic.subscribed || false"
+        (actionClick)="handleAction(topic, $event)"
+      ></app-topic-card>
+    </ng-container>
+  </div>
+</div>

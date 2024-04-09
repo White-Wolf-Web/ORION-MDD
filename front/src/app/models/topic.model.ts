@@ -1,4 +1,4 @@
-export interface Theme {
+export interface Topic {
   id: number;
   title: string;
   content: string;

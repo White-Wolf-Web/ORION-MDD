@@ -44,7 +44,7 @@ describe('ArticleDetailsComponent', () => {
         title: 'Test Article Title',
         date: '2024-01-01',
         author: 'Test Author',
-        theme: 'Test Theme',
+        theme: 'Test Topic',
         content: 'Test content',
       })
     );
@@ -68,11 +68,18 @@ describe('ArticleDetailsComponent', () => {
     const newCommentContent = 'New comment';
     component.userInput = newCommentContent;
     mockArticleService.addCommentToArticle.and.returnValue(of({}));
-    mockArticleService.getCommentsByArticleId.and.returnValue(of([{ id: '1', username: 'User', content: 'Comment', date: new Date() }]));
+    mockArticleService.getCommentsByArticleId.and.returnValue(
+      of([{ id: '1', username: 'User', content: 'Comment', date: new Date() }])
+    );
 
     component.submitArticleComment();
 
-    expect(mockArticleService.addCommentToArticle).toHaveBeenCalledWith(component.articleId, { content: newCommentContent });
-    expect(mockArticleService.getCommentsByArticleId).toHaveBeenCalledWith(component.articleId);
+    expect(mockArticleService.addCommentToArticle).toHaveBeenCalledWith(
+      component.articleId,
+      { content: newCommentContent }
+    );
+    expect(mockArticleService.getCommentsByArticleId).toHaveBeenCalledWith(
+      component.articleId
+    );
   });
 });

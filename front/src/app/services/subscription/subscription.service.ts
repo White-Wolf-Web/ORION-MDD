@@ -1,4 +1,38 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { Subscription } from 'src/app/models/subscription.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SubscriptionService {
+  private apiUrl = 'http://localhost:8080/api/auth';
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  getSubscriptionsForUser(): Observable<Subscription[]> {
+    return this.http.get<Subscription[]>(`${this.apiUrl}/me`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    });
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Subscription } from 'src/app/models/subscription.model';
 import { AuthService } from '../auth/auth.service';
@@ -52,3 +86,4 @@ export class SubscriptionService {
     });
   }
 }
+*/

@@ -5,7 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MeComponent } from './pages/me/me.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { ThemesComponent } from './pages/themes/themes.component';
+import { TopicsComponent } from './pages/topics/topics.component';
 import { ArticleComponent } from './pages/article/article.component';
 import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
 import { NewArticleComponent } from './pages/new-article/new-article.component';
@@ -16,11 +16,11 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'me', component: MeComponent },
-  { path: 'themes', component: ThemesComponent },
+  { path: 'topics', component: TopicsComponent },
   { path: 'articles', component: ArticleComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
   { path: 'new-article', component: NewArticleComponent },
-  { path: '404', component: NotFoundComponent }
+  { path: '404', component: NotFoundComponent },
 ];
 
 @NgModule({
