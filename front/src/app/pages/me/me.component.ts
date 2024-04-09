@@ -22,6 +22,7 @@ export class MeComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
+    //private subscriptionService: SubscriptionService,
     private topicsService: TopicsService,
     private topicsStateService: TopicsStateService
   ) {
@@ -34,8 +35,19 @@ export class MeComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserData();
     this.loadSubscribedTopics();
+    // this.loadSubscriptions();
   }
-
+/*
+  loadSubscriptions(): void {
+    this.subscriptionService.getSubscriptionsForUser().subscribe({
+      next: (subscriptions: Subscription[]) => {
+        this.subscriptions = subscriptions;
+      },
+      error: (error: any) =>
+        console.error('Erreur lors du chargement des abonnements', error),
+    });
+  }
+*/
   loadUserData(): void {
     this.authService.getCurrentUser().subscribe({
       next: (user: User) => {
@@ -57,14 +69,25 @@ export class MeComponent implements OnInit {
   }
 
   loadSubscribedTopics(): void {
-    this.topicsService.getSubscribedTopicsForUser().subscribe({
-      next: (topics: Topic[]) => {
-        this.subscribedTopics = topics;
-        this.topicsStateService.saveTopicsState(topics); // Mettez à jour l'état global des sujets abonnés
-      },
-      error: (error) => console.error('Error loading subscribed topics', error),
-    });
+    const storedTopics = this.topicsStateService.loadTopicsState();
+    if (storedTopics && storedTopics.length > 0) {
+      this.subscribedTopics = storedTopics.filter((topic) => topic.subscribed);
+    } else {
+      this.topicsService.getSubscribedTopicsForUser().subscribe({
+        next: (topics: Topic[]) => {
+          this.subscribedTopics = topics.map((topic) => ({
+            ...topic,
+            subscribed: true, // Assure que subscribed est toujours un boolean
+          }));
+          //this.topicsStateService.saveTopicsState(this.subscribedTopics);
+          this.topicsStateService.saveTopicsState(topics);
+        },
+        error: (error) =>
+          console.error('Error loading subscribed topics', error),
+      });
+    }
   }
+
   save(): void {
     if (this.userForm.valid) {
       const userData: Partial<User> = {
