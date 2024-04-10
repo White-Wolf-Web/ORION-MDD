@@ -14,14 +14,17 @@ export class TopicsStateService {
   
   loadTopicsState(): Topic[] {
     const topicsJson = localStorage.getItem(this.topicsKey);
-    return topicsJson ? JSON.parse(topicsJson) : [];
+    if (topicsJson) {
+      return JSON.parse(topicsJson);
+    }
+    return [];
   }
-  
+
   updateTopicSubscription(topicId: number, subscribed: boolean): void {
-    let topics = this.loadTopicsState();
-    const topicIndex = topics.findIndex(t => t.id === topicId);
-    if (topicIndex !== -1) {
-      topics[topicIndex].subscribed = subscribed;
+    const topics = this.loadTopicsState();
+    const index = topics.findIndex((t) => t.id === topicId);
+    if (index !== -1) {
+      topics[index].subscribed = subscribed;
       this.saveTopicsState(topics);
     }
   }

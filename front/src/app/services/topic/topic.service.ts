@@ -17,11 +17,17 @@ export class TopicsService {
   }
 
   subscribeToTopic(topicId: number): Observable<any> {
-    return this.httpClient.post(`${this.apiUrl}/subscribe/${topicId}`, {});
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`
+    });
+    return this.httpClient.post(`${this.apiUrl}/subscribe/${topicId}`, {}, { headers });
   }
 
   unsubscribeFromTopic(topicId: number): Observable<any> {
-    return this.httpClient.post(`${this.apiUrl}/unsubscribe/${topicId}`, {});
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`
+    });
+    return this.httpClient.post(`${this.apiUrl}/unsubscribe/${topicId}`, {}, { headers });
   }
 
   getSubscribedTopics(): Observable<Topic[]> {
@@ -29,10 +35,9 @@ export class TopicsService {
   }
   
   getSubscribedTopicsForUser(): Observable<Topic[]> {
-    return this.httpClient.get<Topic[]>(`${this.apiUrl}/me/subscribed`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.authService.getToken()}`
-      })
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authService.getToken()}`
     });
+    return this.httpClient.get<Topic[]>(`${this.apiUrl}/me/subscribed`, { headers });
   }
 }
