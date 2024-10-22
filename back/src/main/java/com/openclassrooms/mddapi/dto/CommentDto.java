@@ -1,19 +1,21 @@
 package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
-import java.util.Date;
-
+import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentDto {
+
     private Long id;
 
-    @NotBlank(message = "Le contenu ne peut pas être vide")
+    @NotBlank(message = "Comment content is required")
     private String content;
-    private UserDto author; //  On utilise UserDTO pour inclure les informations sur l'auteur
-    private Date createdAt;
-    private Date updatedAt;
 
+    private String authorUsername;  // Nom de l'auteur du commentaire
+
+    private String createdAt;       // Format de la date
+
+    private Long articleId;
 }

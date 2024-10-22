@@ -2,21 +2,20 @@ package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AuthRegisterDto {
-    @NotBlank(message = "L'email ne peut pas être vide")
-    @Email(message = "Format d'email invalide")
+
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @Email(message = "Please provide a valid email address")
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank(message = "Le nom ne peut pas être vide")
-    private String name;
-
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Password is required")
     private String password;
 }

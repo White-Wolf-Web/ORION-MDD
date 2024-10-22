@@ -1,43 +1,50 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.UserDto;
-import com.openclassrooms.mddapi.dto.UserUpdateDto;
-import com.openclassrooms.mddapi.service.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import com.openclassrooms.mddapi.model.User;
+import com.openclassrooms.mddapi.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    private UserService userService;
+
+    // Récupérer tous les utilisateurs
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.findAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    // Récupérer un utilisateur par ID
     @GetMapping("/{id}")
-    @Operation(summary = "Get user by ID", responses = {@ApiResponse(responseCode = "200", description = "User found successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class), examples = {@ExampleObject(name = "SuccessResponse", value = "{\"id\": 1, \"email\": \"example@example.com\", \"name\": \"John Doe\"}")})), @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = {@ExampleObject(name = "UnauthorizedResponse", value = "{\"error\": \"Unauthorized: Access is denied due to invalid credentials.\"}")})), @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class), examples = {@ExampleObject(name = "NotFoundResponse", value = "{\"error\": \"User not found.\"}")}))})
-
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
-        UserDto userDto = userService.findUserById(id);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        UserDto user = userService.findUserById(id);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // Mettre à jour un utilisateur
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateDto userUpdateDto) {
-        UserDto updatedUserDto = userService.updateUserById(id, userUpdateDto);
-        return ResponseEntity.ok(updatedUserDto);
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        UserDto updatedUser = userService.updateUser(userDto);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
+    // Supprimer un utilisateur
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

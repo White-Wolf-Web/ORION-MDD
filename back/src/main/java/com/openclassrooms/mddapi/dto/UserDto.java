@@ -2,25 +2,25 @@ package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import lombok.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+
     private Long id;
 
-    @NotBlank(message = "L'email ne peut pas être vide")
-    @Email(message = "Format d'email invalide")
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @Email(message = "Please provide a valid email address")
+    @NotBlank(message = "Email is required")
     private String email;
 
-    @NotBlank(message = "Le nom ne peut pas être vide")
-    private String name;
+    private String createdAt;       // Date d'inscription
 
-    private Date created_at;
-    private Date updated_at;
+    // Liste des abonnements (peut être utile pour le profil utilisateur)
+    private Set<SubscriptionDto> subscriptions;
 }

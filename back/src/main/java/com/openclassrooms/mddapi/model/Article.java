@@ -8,27 +8,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "ARTICLES")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(nullable = false, unique = true)
-    private String username;
-
-    @NotNull
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @NotNull
     @Column(nullable = false)
-    private String password;
+    private String title;
+
+    @NotNull
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Subscription topic;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,19 +42,8 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Article> articles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "USER_SUBSCRIPTIONS",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscription_id")
-    )
-    private Set<Subscription> subscriptions = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

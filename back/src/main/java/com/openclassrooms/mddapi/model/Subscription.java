@@ -1,14 +1,13 @@
 package com.openclassrooms.mddapi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.Date;
-
-@Setter
-@Getter
 @Entity
-@Table(name = "SUBSCRIPTION")
+@Table(name = "SUBSCRIPTIONS")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,21 +17,13 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ManyToOne car un User peut s'abonner à plusieurs Topics
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @NotNull
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    // ManyToOne car un Topic peut avoir plusieurs abonnés
-    @ManyToOne
-    @JoinColumn(name = "topic_id", referencedColumnName = "id")
-    private Topic topic;
+    @ManyToMany(mappedBy = "subscriptions")
+    private Set<User> users = new HashSet<>();
 
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created_at;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated_at;
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Article> articles = new HashSet<>();
 }
