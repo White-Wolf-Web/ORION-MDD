@@ -40,6 +40,23 @@ public class CommentServiceImpl implements CommentService {
         return convertToCommentDto(savedComment);
     }
 
+    @Override
+    public boolean deleteComment(Long commentId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Commentaire non trouvé"));
+
+        // Vérification si l'utilisateur connecté est l'auteur du commentaire
+        if (comment.getUser().getId().equals(user.getId())) {
+            commentRepository.delete(comment);
+            return true;
+        }
+
+        return false;  // Si l'utilisateur n'est pas l'auteur, la suppression n'est pas autorisée
+    }
+
     // Conversion de Comment en CommentDto
     private CommentDto convertToCommentDto(Comment comment) {
         CommentDto commentDto = new CommentDto();

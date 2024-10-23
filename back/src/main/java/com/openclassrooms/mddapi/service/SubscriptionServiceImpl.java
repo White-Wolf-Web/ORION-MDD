@@ -58,8 +58,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    @Transactional  // Ajouter l'annotation @Transactional ici
+    @Transactional
     public SubscriptionDto subscribeToTopic(SubscriptionDto subscriptionDto, String email) {
+
         // Récupérer l'utilisateur connecté par son email
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
@@ -68,7 +69,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Subscription subscription = subscriptionRepository.findById(subscriptionDto.getId())
                 .orElseThrow(() -> new RuntimeException("Le sujet (topic) spécifié n'existe pas"));
 
-        // Associer l'utilisateur connecté à cet abonnement (ajouter à la liste des utilisateurs abonnés)
+        // Associer l'utilisateur connecté à cet abonnement
         subscription.getUsers().add(user);
 
         // Sauvegarder l'abonnement avec l'utilisateur ajouté
@@ -78,7 +79,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return convertToSubscriptionDto(subscription);
     }
 
+    // Méthode pour récupérer les abonnements d'un utilisateur
+    @Override
+    @Transactional
+    public List<SubscriptionDto> findSubscriptionsByUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
+        Set<Subscription> subscriptions = user.getSubscriptions();
+        return subscriptions.stream()
+                .map(this::convertToSubscriptionDto)
+                .collect(Collectors.toList());
+    }
 
     // Conversion Subscription -> SubscriptionDto
     private SubscriptionDto convertToSubscriptionDto(Subscription subscription) {

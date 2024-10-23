@@ -20,4 +20,6 @@ public interface SubscriptionService {
 
     // S'abonner à un sujet
     SubscriptionDto subscribeToTopic(SubscriptionDto subscriptionDto, String email);
+
+    List<SubscriptionDto> findSubscriptionsByUser(String email);
 }

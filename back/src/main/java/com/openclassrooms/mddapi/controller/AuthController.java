@@ -6,6 +6,10 @@ import com.openclassrooms.mddapi.dto.JwtTokenDto;
 import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.service.AuthService;
 import com.openclassrooms.mddapi.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Auth", description = "User authentication")
 public class AuthController {
 
     @Autowired
@@ -25,6 +30,12 @@ public class AuthController {
 
     // Connexion
     @PostMapping("/login")
+    @Operation(summary = "User login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     public ResponseEntity<?> login(@RequestBody AuthLoginDto loginDto) {
         try {
             JwtTokenDto tokenDto = authService.login(loginDto);
@@ -36,6 +47,12 @@ public class AuthController {
 
     // Inscription
     @PostMapping("/register")
+    @Operation(summary = "User registration")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
     public ResponseEntity<?> register(@RequestBody AuthRegisterDto registerDto) {
         try {
             authService.register(registerDto);
@@ -47,6 +64,12 @@ public class AuthController {
 
     // Récupérer les informations de l'utilisateur connecté
     @GetMapping("/me")
+    @Operation(summary = "Get current user profile")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Profile retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     public ResponseEntity<UserDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserEmail = authentication.getName();  // Le nom correspond à l'email dans ce cas
