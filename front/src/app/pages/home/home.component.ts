@@ -1,20 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit {
-  constructor(private router: Router) {}
+export class HomeComponent {
 
-  ngOnInit(): void {}
-
-  login() {
-    this.router.navigate(['/login']);
-  }
-  register() {
-    this.router.navigate(['/register']);
-  }
 }

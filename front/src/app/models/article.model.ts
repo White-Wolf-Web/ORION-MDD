@@ -1,9 +1,9 @@
-export interface Article {
-    id: string;
+export interface ArticleDto {
+    id: number;
     title: string;
-    date: string;
-    author: string;
-    theme: string;
     content: string;
+    authorUsername: string;
+    createdAt: string;
+    updatedAt?: string;
   }
   

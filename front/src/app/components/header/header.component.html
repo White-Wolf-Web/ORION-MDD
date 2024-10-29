@@ -1,9 +1,35 @@
-<div class="header-container">
-  <img src="/assets/logo_p6.png" alt="Logo" class="logo" />
-  <app-nav class="nav" *ngIf="showNav"></app-nav>
-</div>
+<header class="flex items-center justify-between p-4 border-b-2 border-black" *ngIf="!isAuthPage() || (isAuthPage() && !isSmallScreen)">
+  <!-- Logo à gauche -->
+  <div class="flex items-center">
+    <img src="assets/logo_p6.png" alt="Logo" class="w-36 h-auto" />
+  </div>
 
+  <!-- Nav à droite, uniquement si ce n’est pas une page d'auth -->
+  <nav *ngIf="!isAuthPage()" class="hidden md:flex items-center space-x-4">
+    <a routerLink="/articles" class="hover:underline">Articles</a>
+    <a routerLink="/subscriptions" class="hover:underline">Thèmes</a>
+    <img src="assets/user-icon.png" alt="User" class="w-9 h-auto rounded-full" />
+  </nav>
 
-<!--   <app-header [showNav]="true"></app-header>
-       <app-header [showNav]="false"></app-header>
-      -->
+  <!-- Menu hamburger pour le responsive -->
+  <button (click)="toggleMenu()" class="md:hidden focus:outline-none">
+    <img src="assets/menu-icon.png" alt="Menu" class="w-6 h-6" />
+  </button>
+
+  <!-- Menu déroulant responsive -->
+  <div *ngIf="isMenuOpen" class="absolute top-0 right-0 h-full bg-white p-4 rounded shadow-md flex flex-col justify-between w-[184px]">
+    <!-- Liens Articles et Thèmes alignés en haut -->
+    <div class="flex flex-col items-end space-y-2">
+      <a routerLink="/articles" class="block  py-2 hover:bg-gray-200">Articles</a>
+      <a routerLink="/subscriptions" class="block py-2 hover:bg-gray-200">Thèmes</a>
+    </div>
+  
+    <!-- Image de profil alignée en bas -->
+    <div class="flex justify-end mt-auto">
+      <a routerLink="/me">
+        <img src="assets/user-icon.png" alt="User" class="w-9 h-auto rounded-full" />
+      </a>
+    </div>
+  </div>
+  
+</header>

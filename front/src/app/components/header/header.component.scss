@@ -1,30 +1,24 @@
-.header-container {
-  width: 100vw;
-  max-width: 1024px;
-  height: 94px;
-  border: 1px solid black;
-  background: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 37px 0 22px;
-
-}
-
-.logo {
-  width: 140px;
-  height: 81px;
-}
-
-.nav {
-  justify-content: space-between;
-}
-
-@media (max-width: 400px) {
-  .header-container {
-    min-width: 100%;
-    height: 62px;
-   
+header {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    img {
+      cursor: pointer;
+    }
+  
+    nav a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #4a4a4a;
+  
+      &:hover {
+        color: #2d3748;
+      }
+    }
+  
+    .user-icon {
+      width: 32px;
+      height: 32px;
+    }
   }
-
-}
+  

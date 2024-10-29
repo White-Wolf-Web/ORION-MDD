@@ -1,7 +1,21 @@
-<div class="home-container">
-  <img src="/assets/logo_p6.png" alt="logo" class="logo" />
-  <div class="buttons-container">
-    <app-button buttonText="Se connecter" buttonType="secondary" (click)="login()" > </app-button
-    ><app-button buttonText="S'inscrire" buttonType="secondary" (click)="register()" ></app-button>
+<div class="h-screen flex flex-col items-center bg-white">
+  <div class="flex flex-col items-center mt-[20vh] md:mt-[10vh] lg:mt-[15vh]">
+    <img src="assets/logo_p6.png" alt="MDD Logo" class="w-[200px] h-auto mb-8 md:w-[300px] lg:w-[412px]" />
+
+    <!-- Boutons de connexion et inscription -->
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-12">
+      <button
+      routerLink="/login"
+        class="px-4 py-2 bg-white text-black border-black border-2 rounded-lg font-semibold hover:bg-gray-200 focus:outline-none md:px-6"
+      >
+        Se connecter
+      </button>
+      <button
+      routerLink="/register"
+        class="px-4 py-2 bg-white text-black border-black border-2 rounded-lg font-semibold hover:bg-gray-200 focus:outline-none md:px-6"
+      >
+        S'inscrire
+      </button>
+    </div>
   </div>
 </div>

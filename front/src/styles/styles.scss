@@ -1,46 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --primary-color: #7763c5;
-}
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 
-html,
-body {
-  height: 100%;
-  box-sizing: border-box;
-}
 
-body {
-  margin: 0 auto;
-  max-width: 1024px;
+html, body { height: 100%; }
+body { 
+  margin: auto; 
   font-family: Roboto, "Helvetica Neue", sans-serif;
+max-width: 900px;
 }
 
-p {
-  font-family: Inter;
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 29.05px;
-  text-align: left;
+.mat-drawer-inner-container::-webkit-scrollbar {
+    display: none;
 }
 
-main {
-  padding: 15px;
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
 }
 
 h2 {
-  font-weight: 400;
-  font-size: 24px;
-  text-align: center;
-  margin: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.36px;
+  margin-bottom: 8px;
 }
 
-.error {
-  color: red;
-  font-size: 12px;
+p {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.94px;
+  color: black;
 }
+
+.backArrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: inherit;
+  
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .text-customPurple {
+    color: #7763C5; // ou une classe Tailwind si configurée
+  }
+  

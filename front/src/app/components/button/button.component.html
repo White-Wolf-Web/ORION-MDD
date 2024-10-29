@@ -1,12 +1,9 @@
-
-  <button mat-button [ngClass]="{'button primary': buttonType === 'primary', 'button secondary': buttonType === 'secondary'}" type="submit">
-    {{ buttonText }}
-  </button>
+<div class="flex justify-center">
+    <button
+      type="submit"
+      class="w-[128px] h-[40px] bg-customPurple text-white font-inter text-[16px] font-bold leading-[19.36px] rounded-[8px]"
+    >
+      {{ text }}
+    </button>
+  </div>
   
-
-  <!-- Bouton primaire 
-<app-button buttonText="Créer" buttonType="primary"></app-button>
-
- Bouton secondaire 
-<app-button buttonText="Annuler" buttonType="secondary"></app-button>
-     -->

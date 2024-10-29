@@ -1,64 +1,17 @@
-<app-header [showNav]="false" class="loginHeader"></app-header>
-<main>
-  <app-arrow-back></app-arrow-back>
-  <img src="/assets/logo_p6.png" alt="logo" class="logo" />
-  <h2>Se connecter</h2>
-
-  <div>
-    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onLogin()">
-      <div class="input-field">
-        <label for="email">E-mail ou nom d’utilisateur</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Entrez votre email"
-          formControlName="email"
-        />
-        <div
-          *ngIf="
-            loginForm.get('email')?.invalid &&
-            (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
-          "
-          class="error"
-        >
-          <div *ngIf="loginForm.get('email')?.errors?.['required']">
-            L'email est requis.
-          </div>
-          <div *ngIf="loginForm.get('email')?.errors?.['email']">
-            L'email n'est pas valide.
-          </div>
-        </div>
-      </div>
-
-      <div class="input-field">
-        <label for="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Entrez votre mot de passe"
-          formControlName="password"
-        />
-        <div
-          *ngIf="
-            loginForm.get('password')?.invalid &&
-            (loginForm.get('password')?.dirty ||
-              loginForm.get('password')?.touched)
-          "
-          class="error"
-        >
-          <div *ngIf="loginForm.get('password')?.errors?.['required']">
-            Le mot de passe est requis.
-          </div>
-        </div>
-      </div>
-
-      <app-button
-        buttonText="Se connecter"
-        buttonType="primary"
-        class="loginButton"
-        [disabled]="loginForm.invalid"
-        type="submit"
-      ></app-button>
-    </form>
+<app-back-arrow></app-back-arrow>
+<div class="p-8 max-w-sm mx-auto">
+  <h1 class="text-2xl text-center font-bold mb-4">Se connecter</h1>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+    <label for="email" class="text-left text-[16px] font-normal leading-[19.36px] font-inter">E-mail ou nom d’utilisateur</label>
+    <input type="email" id="email" placeholder="Enter your email" [(ngModel)]="email" name="email" class=" p-2 w-full border border-black rounded" required />
   </div>
-</main>
+  <div class="mb-4">
+    <label for="password" class="text-left text-[16px] font-normal leading-[19.36px] font-inter">Mot de passe</label>
+    <input type="password" id="password" placeholder="Enter your password" [(ngModel)]="password" name="password" class="p-2 w-full border-black border rounded" required />
+    </div>
+    <app-button text="Se connecter"></app-button>
+  
+  
+  </form>
+</div>

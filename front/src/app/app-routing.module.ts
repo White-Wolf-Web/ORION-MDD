@@ -1,26 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
-import { MeComponent } from './pages/me/me.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { TopicsComponent } from './pages/topics/topics.component';
-import { ArticleComponent } from './pages/article/article.component';
-import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
-import { NewArticleComponent } from './pages/new-article/new-article.component';
-// consider a guard combined with canLoad / canActivate route option
-// to manage unauthenticated user to access private routes
+import { RegisterComponent } from './pages/register/register.component';
+import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ArticleDetailsComponent } from './components/article-details/article-details.component';
+import { SubscriptionListComponent } from './components/subscription-list/subscription-list.component';
+import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'me', component: MeComponent },
-  { path: 'topics', component: TopicsComponent },
-  { path: 'articles', component: ArticleComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'articles', component: ArticleListComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
-  { path: 'new-article', component: NewArticleComponent },
-  { path: '404', component: NotFoundComponent },
+  { path: 'subscriptions', component: SubscriptionListComponent },
+  { path: 'subscriptions/:id', component: SubscriptionDetailsComponent },
+  { path: 'comments', component: CommentListComponent },
+  { path: 'users', component: UserListComponent },
+  { path: 'users/:id', component: UserDetailsComponent },
 ];
 
 @NgModule({

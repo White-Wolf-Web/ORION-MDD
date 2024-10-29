@@ -1,5 +1,8 @@
-export interface Subscription {
-  id: number;
-  title: string;
-  description: string;
-}
+export interface SubscriptionDto {
+    id: number;
+    name: string;
+    title?: string;
+    content?: string;
+    userIds: number[];
+  }
+  

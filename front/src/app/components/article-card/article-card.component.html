@@ -1,11 +1,11 @@
-<div class="article-card">
-    <h2 class="articleCardTitle">{{ title }}</h2>
-    <div class="articleCardInfo">
-      <div class="articleCardDate">{{ date }}</div>
-      <div class="articleCardAuthor">{{ author }}</div>
-    </div>
-    <p class="articleCardContent">{{ content }}</p>
+<div class="p-4 w-[360px] h-[180px] bg-gray-100 rounded-lg flex flex-col space-y-2">
+    <h2 class="text-lg font-bold font-inter leading-[19.36px]">{{ title }}</h2>
+    <p class="text-sm font-light font-inter leading-[16.94px] text-gray-500">
+      {{ date }} • {{ author }}
+    </p>
+    <p class="text-sm font-inter leading-[16.94px]">
+      {{ content }}...
+    </p>
+    
   </div>
   
-<!--  <app-card [title]="'Titre de la carte'" [date]="'01/01/2024'" [author]="'John Doe'" [content]="'Ceci est le contenu de la carte.'"></app-card>
-   -->
