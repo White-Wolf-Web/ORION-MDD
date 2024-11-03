@@ -1,0 +1,51 @@
+<!-- article-create.component.html -->
+<main class="relative">
+<app-back-arrow></app-back-arrow>
+<div class="flex flex-col items-center justify-center p-8  bg-white mx-auto">
+  <div class="m-9 md:hidden" ></div>
+    <h2 class="text-2xl font-bold mb-4 ">Créer un nouvel article</h2>
+
+    <form class="flex flex-col items-center justify-center gap-3 mx-auto" (ngSubmit)="onSubmit()">
+        <!-- Label et champ pour le titre -->
+        <label for="topic"></label>
+        <input
+          id="topic"
+          type="text"
+          [(ngModel)]="article.title"
+          name="topic"
+          class="border-2 border-customPurple w-[180px] text-left h-auto rounded py-1 px-2"
+          placeholder="Sélectionner un thême"
+          required
+        />
+      
+         <!-- Label et champ pour le nom de l'auteur -->
+         <label for="title"></label>
+         <input
+           id="title"
+           type="text"
+           [(ngModel)]="article.title"
+           name="title"
+           class="border-2 border-customPurple w-[180px] text-left h-auto rounded py-1 px-2"
+           placeholder="Titre de l'article"
+           required
+         />
+
+        <!-- Label et champ pour le contenu -->
+        <label for="content"></label>
+        <textarea
+          id="content"
+          [(ngModel)]="article.content"
+          name="content"
+          class="border-2 border-customPurple w-[180px] text-left h-auto min-h-24 rounded py-1 px-2"
+          placeholder="Contenu de l'article"
+          required
+        ></textarea>
+      
+       
+      
+        <app-button class="mt-9" text="Créer"></app-button>
+      </form>
+      
+  </div>
+  
+</main>

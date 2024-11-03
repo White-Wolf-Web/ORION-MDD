@@ -1,10 +1,8 @@
-<div class="p-4">
-  <h2 class="text-2xl font-bold mb-4">Subscriptions</h2>
+<div class="p-4 gap-4 flex justify-center flex-wrap ">
   <div *ngFor="let subscription of subscriptions" class="mb-4">
     <app-subcription-card
-      [title]="subscription.title || 'Titre non disponible'"
-      [content]="
-        subscription.content || 'Contenu non disponible' | slice : 0 : 100"
+      [title]="subscription.name || 'Titre non disponible'"
+      [content]="subscription.description || 'Contenu non disponible'"
     ></app-subcription-card>
   </div>
 </div>

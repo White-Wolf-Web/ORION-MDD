@@ -8,20 +8,21 @@ import { ArticleDetailsComponent } from './components/article-details/article-de
 import { SubscriptionListComponent } from './components/subscription-list/subscription-list.component';
 import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
-import { UserListComponent } from './components/user-list/user-list.component';
-import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { ArticleCreateComponent } from './components/article-create/article-create.component';
+import { MeComponent } from './pages/me/me.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'articles', component: ArticleListComponent },
+  { path: 'articles/create', component: ArticleCreateComponent },
   { path: 'articles/:id', component: ArticleDetailsComponent },
   { path: 'subscriptions', component: SubscriptionListComponent },
   { path: 'subscriptions/:id', component: SubscriptionDetailsComponent },
   { path: 'comments', component: CommentListComponent },
-  { path: 'users', component: UserListComponent },
-  { path: 'users/:id', component: UserDetailsComponent },
+  { path: 'me', component: MeComponent },
+
 ];
 
 @NgModule({

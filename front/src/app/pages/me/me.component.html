@@ -1,0 +1,36 @@
+<div class="p-8">
+    <h1 class="text-3xl font-bold mb-6">Profil Utilisateur</h1>
+  
+    <!-- User Information Form -->
+    <div class="mb-6 w-[280px] m-auto">
+      <label for="username" class="block mb-2 font-semibold"></label>
+      <input id="username" type="text" [(ngModel)]="user.username" class="p-2 border border-customPurple rounded w-full mb-4" placeholder="UserName" />
+  
+      <label for="email" class="block mb-2 font-semibold"></label>
+      <input id="email" type="email" [(ngModel)]="user.email" class="p-2 border border-customPurple rounded w-full mb-4" placeholder="email@email.fr" />
+      <app-button text="Sauvegarder"></app-button>
+      
+    </div>
+    
+    <!-- Logout Section -->
+    <p (click)="logout()" class="text-red-500 cursor-pointer mb-6 text-center">Se déconnecter</p>
+  
+    <hr class="my-6 border-black" />
+  
+    <!-- Subscriptions Section -->
+    <h2 class="text-2xl text-center font-bold mb-4">Abonnements</h2>
+    <div *ngIf="subscriptions && subscriptions.length; else noSubscriptions">
+      <div *ngFor="let subscription of subscriptions" class="mb-4">
+        <app-subcription-card
+          [title]="subscription.title ?? 'Sans titre'"
+          [content]="subscription.content ?? 'Contenu indisponible' | slice:0:100">
+        </app-subcription-card>
+      </div>
+    </div>
+  
+    <ng-template #noSubscriptions>
+      <p>Vous n'avez pas encore d'abonnements.</p>
+    </ng-template>
+  </div>
+  
+  

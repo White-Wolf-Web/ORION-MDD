@@ -7,16 +7,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ArticleCreateComponent } from './components/article-create/article-create.component';
 import { ArticleDetailsComponent } from './components/article-details/article-details.component';
 import { SubscriptionListComponent } from './components/subscription-list/subscription-list.component';
 import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
-import { RegisterComponent } from './pages/register/register.component';
 
-import { UserListComponent } from './components/user-list/user-list.component';
-import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { HomeComponent } from './pages/home/home.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
+import { MeComponent } from './pages/me/me.component';
+
 import { HeaderComponent } from './components/header/header.component'; 
 import { ButtonComponent } from './components/button/button.component';
 
@@ -29,7 +30,6 @@ import { UserService } from './services/user.service';
 @NgModule({
   declarations: [
     AppComponent,
-    ArticleDetailsComponent,
     SubscriptionDetailsComponent,
     CommentListComponent,
 
@@ -41,13 +41,14 @@ import { UserService } from './services/user.service';
     CommonModule,
     HomeComponent,          
     LoginComponent,
-    RegisterComponent,           
-    UserListComponent,
-    UserDetailsComponent,
+    RegisterComponent,    
+    MeComponent,       
     HeaderComponent,
     HttpClientModule,
     ButtonComponent,
     ArticleListComponent,
+    ArticleDetailsComponent,
+    ArticleCreateComponent
     
   ], 
 

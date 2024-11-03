@@ -22,4 +22,6 @@ public interface SubscriptionService {
     SubscriptionDto subscribeToTopic(SubscriptionDto subscriptionDto, String email);
 
     List<SubscriptionDto> findSubscriptionsByUser(String email);
+
+    void addThemes(List<SubscriptionDto> themes);
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
+import { SubscriptionService } from '../../services/subscription.service';
 
 @Component({
   selector: 'app-subcription-card',
@@ -11,4 +12,18 @@ import { ButtonComponent } from '../button/button.component';
 export class SubcriptionCardComponent {
   @Input() title!: string;
   @Input() content!: string;
+  @Input() subscriptionId!: number;
+
+  constructor(private subscriptionService: SubscriptionService) {}
+
+  onSubscribe() {
+    this.subscriptionService.subscribeToTopic(this.subscriptionId).subscribe(
+      () => {
+        console.log('Subscription successful');
+      },
+      (error) => {
+        console.error('Subscription failed:', error);
+      }
+    );
+  }
 }

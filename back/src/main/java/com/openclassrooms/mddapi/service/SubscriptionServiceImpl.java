@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.model.Subscription;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    @Transactional
     public List<SubscriptionDto> findAllSubscriptions() {
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         return subscriptions.stream()
                 .map(this::convertToSubscriptionDto)
                 .collect(Collectors.toList());
     }
+
+
+    @PostConstruct
+    public void testFindAll() {
+        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        System.out.println("Test du repository : " + subscriptions.size() + " enregistrements trouvés.");
+    }
+
 
     @Override
     public void deleteSubscription(Long id) {
@@ -97,6 +107,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         SubscriptionDto subscriptionDto = new SubscriptionDto();
         subscriptionDto.setId(subscription.getId());
         subscriptionDto.setName(subscription.getName());
+        subscriptionDto.setDescription(subscription.getDescription());
 
         Set<Long> userIds = subscription.getUsers().stream()
                 .map(User::getId)
@@ -105,6 +116,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         return subscriptionDto;
     }
+
 
     // Conversion SubscriptionDto -> Subscription
     private Subscription convertToSubscription(SubscriptionDto subscriptionDto) {
@@ -120,4 +132,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         return subscription;
     }
+
+    @Override
+    public void addThemes(List<SubscriptionDto> themes) {
+        List<Subscription> subscriptions = themes.stream()
+                .map(themeDto -> {
+                    Subscription subscription = new Subscription();
+                    subscription.setName(themeDto.getName());
+                    subscription.setDescription(themeDto.getDescription());
+                    return subscription;
+                })
+                .collect(Collectors.toList());
+
+        subscriptionRepository.saveAll(subscriptions);
+    }
+
 }

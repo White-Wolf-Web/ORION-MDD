@@ -1,14 +1,37 @@
-<header class="flex items-center justify-between p-4 border-b-2 border-black" *ngIf="!isAuthPage() || (isAuthPage() && !isSmallScreen)">
+<header
+  class="flex items-center justify-between p-4 border-b-2 border-black"
+  *ngIf="!isAuthPage() || (isAuthPage() && !isSmallScreen)"
+>
   <!-- Logo à gauche -->
   <div class="flex items-center">
-    <img src="assets/logo_p6.png" alt="Logo" class="w-36 h-auto" />
+    <a routerLink="/">
+      <img src="assets/logo_p6.png" alt="Logo" class="w-36 h-auto"
+    /></a>
   </div>
 
   <!-- Nav à droite, uniquement si ce n’est pas une page d'auth -->
   <nav *ngIf="!isAuthPage()" class="hidden md:flex items-center space-x-4">
-    <a routerLink="/articles" class="hover:underline">Articles</a>
-    <a routerLink="/subscriptions" class="hover:underline">Thèmes</a>
-    <img src="assets/user-icon.png" alt="User" class="w-9 h-auto rounded-full" />
+    <a
+      routerLink="/articles"
+      routerLinkActive="text-red-700"
+      class="hover:underline"
+    >
+      Articles
+    </a>
+    <a
+      routerLink="/subscriptions"
+      routerLinkActive="text-red-700"
+      class="hover:underline"
+    >
+      Thèmes
+    </a>
+    <a routerLink="/me">
+      <img
+        src="assets/user-icon.png"
+        alt="User"
+        class="w-9 h-auto rounded-full"
+      />
+    </a>
   </nav>
 
   <!-- Menu hamburger pour le responsive -->
@@ -17,19 +40,37 @@
   </button>
 
   <!-- Menu déroulant responsive -->
-  <div *ngIf="isMenuOpen" class="absolute top-0 right-0 h-full bg-white p-4 rounded shadow-md flex flex-col justify-between w-[184px]">
+  <div
+    *ngIf="isMenuOpen"
+    class="absolute top-0 right-0 h-full bg-white p-4 rounded shadow-md flex flex-col justify-between w-[184px]"
+  >
     <!-- Liens Articles et Thèmes alignés en haut -->
     <div class="flex flex-col items-end space-y-2">
-      <a routerLink="/articles" class="block  py-2 hover:bg-gray-200">Articles</a>
-      <a routerLink="/subscriptions" class="block py-2 hover:bg-gray-200">Thèmes</a>
+      <a
+        routerLink="/articles"
+        routerLinkActive="text-red-700"
+        class="block py-2 hover:bg-gray-200"
+      >
+        Articles
+      </a>
+      <a
+        routerLink="/subscriptions"
+        routerLinkActive="text-red-700"
+        class="block py-2 hover:bg-gray-200"
+      >
+        Thèmes
+      </a>
     </div>
-  
+
     <!-- Image de profil alignée en bas -->
     <div class="flex justify-end mt-auto">
       <a routerLink="/me">
-        <img src="assets/user-icon.png" alt="User" class="w-9 h-auto rounded-full" />
+        <img
+          src="assets/user-icon.png"
+          alt="User"
+          class="w-9 h-auto rounded-full"
+        />
       </a>
     </div>
   </div>
-  
 </header>

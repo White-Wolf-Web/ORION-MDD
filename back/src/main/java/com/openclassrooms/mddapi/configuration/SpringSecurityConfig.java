@@ -42,6 +42,8 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()  // Autoriser les requêtes POST vers /api/auth
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger
+                        .requestMatchers(HttpMethod.GET, "/api/subscriptions/**").authenticated()
+
                         .anyRequest().authenticated()  // Toutes les autres requêtes nécessitent une authentification
                 );
 

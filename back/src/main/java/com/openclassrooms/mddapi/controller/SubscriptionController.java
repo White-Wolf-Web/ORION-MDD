@@ -30,13 +30,10 @@ public class SubscriptionController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    public ResponseEntity<SubscriptionDto> subscribeToTopic(@RequestBody SubscriptionDto subscriptionDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<SubscriptionDto> subscribeToTopic(@RequestBody SubscriptionDto subscriptionDto,
+                                                            @AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
-
-        SubscriptionDto subscription = subscriptionService.saveSubscription(subscriptionDto);  // Utiliser saveSubscription ici
-
-        SubscriptionDto updatedSubscription = subscriptionService.subscribeToTopic(subscription, email);
-
+        SubscriptionDto updatedSubscription = subscriptionService.subscribeToTopic(subscriptionDto, email);
         return new ResponseEntity<>(updatedSubscription, HttpStatus.CREATED);
     }
 
@@ -90,5 +87,16 @@ public class SubscriptionController {
         String email = userDetails.getUsername();
         List<SubscriptionDto> userSubscriptions = subscriptionService.findSubscriptionsByUser(email);
         return new ResponseEntity<>(userSubscriptions, HttpStatus.OK);
+    }
+
+    @PostMapping("/add-themes")
+    @Operation(summary = "Add themes to subscriptions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Themes successfully added"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
+    })
+    public ResponseEntity<String> addThemes(@RequestBody List<SubscriptionDto> themes) {
+        subscriptionService.addThemes(themes);
+        return new ResponseEntity<>("Themes successfully added", HttpStatus.CREATED);
     }
 }

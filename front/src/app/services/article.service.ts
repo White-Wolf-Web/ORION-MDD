@@ -6,6 +6,8 @@ import { ArticleDto } from '../models/article.model';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class ArticleService {
   private apiUrl = 'http://localhost:8080/api/articles';
 
@@ -18,4 +20,10 @@ export class ArticleService {
   getArticleById(id: string): Observable<ArticleDto> {
     return this.http.get<ArticleDto>(`${this.apiUrl}/${id}`);
   }
+
+  createArticle(article: ArticleDto): Observable<ArticleDto> {
+    return this.http.post<ArticleDto>(this.apiUrl, article);
+  }
 }
+
+

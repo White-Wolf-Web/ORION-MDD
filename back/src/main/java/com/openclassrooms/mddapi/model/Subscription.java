@@ -21,6 +21,9 @@ public class Subscription {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(length = 500)
+    private String description;
+
     @ManyToMany(mappedBy = "subscriptions")
     private Set<User> users = new HashSet<>();
 

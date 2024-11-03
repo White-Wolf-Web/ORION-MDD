@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubscriptionDto } from '../models/subscription.model';
 
@@ -11,8 +11,8 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient) {}
 
-  getAllSubscriptions(): Observable<SubscriptionDto[]> {
-    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}`);
+  getAllSubscriptions(headers: HttpHeaders): Observable<SubscriptionDto[]> {
+    return this.http.get<SubscriptionDto[]>(this.apiUrl, { headers });
   }
 
 
@@ -22,6 +22,14 @@ export class SubscriptionService {
 
   subscribe(subscriptionDto: SubscriptionDto): Observable<SubscriptionDto> {
     return this.http.post<SubscriptionDto>(`${this.apiUrl}/subscribe`, subscriptionDto);
+  }
+
+  subscribeToTopic(subscriptionId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/subscribe`, { id: subscriptionId });
+  }
+
+  getUserSubscriptions(): Observable<SubscriptionDto[]> {
+    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/my-subscriptions`);
   }
 
   unsubscribe(id: string): Observable<void> {

@@ -12,7 +12,7 @@
     <div *ngFor="let article of articles" class="mb-4">
       <app-article-card
         [title]="article.title"
-        [date]="article.createdAt"
+        [date]="article.createdAt || 'Date inconnue'"
         [author]="article.authorUsername"
         [content]="article.content | slice : 0 : 100"
       >
