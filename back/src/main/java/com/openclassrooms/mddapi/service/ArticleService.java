@@ -9,13 +9,10 @@ public interface ArticleService {
 
     ArticleDto saveArticle(ArticleDto articleDto, String username);  // Associer l'article à l'utilisateur
 
-    ArticleDto updateArticle(ArticleDto articleDto);  // Mettre à jour un article
+    // Trouver un article par ID
+    ArticleDto findArticleById(Long id);
 
-    ArticleDto findArticleById(Long id);  // Trouver un article par ID
+    List<ArticleDto> findAllArticles();  // Retourner une liste des Articles
 
-    List<ArticleDto> findAllArticles();  // Retourner une liste de ArticleDto
 
-    List<ArticleDto> findArticlesByAuthorId(Long authorId);  // Trouver les articles par auteur
-
-    void deleteArticle(Long id);  // Supprimer un article
 }

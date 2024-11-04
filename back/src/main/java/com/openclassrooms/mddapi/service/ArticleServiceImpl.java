@@ -26,47 +26,35 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private SubscriptionRepository subscriptionRepository; // Ajout du repository pour les sujets (topics)
 
+    // ArticleServiceImpl.java
     @Override
     public ArticleDto saveArticle(ArticleDto articleDto, String username) {
-        // Récupérer l'utilisateur connecté
-        Optional<User> user = userRepository.findByEmail(username);
-        if (user.isPresent()) {
-            Article article = convertToArticle(articleDto);
+        Subscription topic = subscriptionRepository.findById(articleDto.getTopicId())
+                .orElseThrow(() -> new RuntimeException("Le sujet (topic) spécifié n'existe pas"));
 
-            // Récupérer le sujet (topic) à partir du topicId fourni dans ArticleDto
-            Optional<Subscription> topic = subscriptionRepository.findById(articleDto.getTopicId());
-            if (topic.isPresent()) {
-                article.setTopic(topic.get()); // Associer le sujet à l'article
-            } else {
-                throw new RuntimeException("Le sujet (topic) spécifié n'existe pas");
-            }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-            article.setAuthor(user.get());  // Associer l'utilisateur connecté comme auteur
-            return convertToArticleDto(articleRepository.save(article));
-        }
-        throw new RuntimeException("Utilisateur non trouvé");
+        Article article = new Article();
+        article.setTitle(articleDto.getTitle());
+        article.setContent(articleDto.getContent());
+        article.setAuthor(user);
+        article.setTopic(topic);
+
+        Article savedArticle = articleRepository.save(article);
+
+        return convertToArticleDto(savedArticle); // Remplacez convertToDto par convertToArticleDto
     }
 
-    @Override
-    public ArticleDto updateArticle(ArticleDto articleDto) {
-        Article article = convertToArticle(articleDto);
-
-        // Gérer l'association du topic lors de la mise à jour
-        Optional<Subscription> topic = subscriptionRepository.findById(articleDto.getTopicId());
-        if (topic.isPresent()) {
-            article.setTopic(topic.get()); // Mettre à jour le sujet
-        } else {
-            throw new RuntimeException("Le sujet (topic) spécifié n'existe pas");
-        }
-
-        return convertToArticleDto(articleRepository.save(article));
-    }
 
     @Override
     public ArticleDto findArticleById(Long id) {
-        Article article = articleRepository.findById(id).orElse(null);
-        return article != null ? convertToArticleDto(article) : null;
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Article not found with id: " + id));
+        return convertToArticleDto(article);
     }
+
+
 
     @Override
     public List<ArticleDto> findAllArticles() {
@@ -76,18 +64,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<ArticleDto> findArticlesByAuthorId(Long authorId) {
-        List<Article> articles = articleRepository.findByAuthorId(authorId);
-        return articles.stream()
-                .map(this::convertToArticleDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteArticle(Long id) {
-        articleRepository.deleteById(id);
-    }
 
     // Méthode pour convertir Article en ArticleDto
     private ArticleDto convertToArticleDto(Article article) {
@@ -95,9 +71,9 @@ public class ArticleServiceImpl implements ArticleService {
         articleDto.setId(article.getId());
         articleDto.setTitle(article.getTitle());
         articleDto.setContent(article.getContent());
-        articleDto.setAuthorUsername(article.getAuthor().getUsername());  // Associer l'auteur
-        articleDto.setCreatedAt(article.getCreatedAt().toString());  // Conversion de la date en string
-        articleDto.setTopicId(article.getTopic().getId());  // Ajouter l'id du sujet (topic)
+        articleDto.setAuthorUsername(article.getAuthor().getUsername());
+        articleDto.setCreatedAt(article.getCreatedAt().toString());
+        articleDto.setTopicId(article.getTopic().getId());
         return articleDto;
     }
 

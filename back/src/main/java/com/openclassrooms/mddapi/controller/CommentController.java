@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/articles/{articleId}/comments")
 @Tag(name = "Comments", description = "Endpoints for managing comments")
 public class CommentController {
 
@@ -40,20 +40,5 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a comment by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Successfully deleted the comment"),
-            @ApiResponse(responseCode = "404", description = "Comment not found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        String email = userDetails.getUsername();
-        boolean isDeleted = commentService.deleteComment(id, email);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+
 }

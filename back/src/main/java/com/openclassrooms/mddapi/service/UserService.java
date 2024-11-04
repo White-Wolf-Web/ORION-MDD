@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.dto.UserDto;
-import com.openclassrooms.mddapi.model.User;
 
 import java.util.List;
 
@@ -18,4 +18,12 @@ public interface UserService {
     UserDto findUserByEmail(String email);  // Trouver par email et retourner UserDto
 
     void deleteUser(Long id);  // Supprimer par ID
+
+    UserDto subscribeToTheme(Long themeId, String email);
+
+    UserDto unsubscribeFromTheme(Long themeId, String email);
+
+    boolean isUserSubscribedToTheme(Long themeId, String email);
+
+    List<SubscriptionDto> getUserSubscriptions(String email); // Récupérer les abonnements d'un utilisateur par email
 }

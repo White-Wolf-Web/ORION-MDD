@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDto } from '../models/user.model';
 
@@ -25,5 +25,12 @@ export class UserService {
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // Vérifier si l'utilisateur est abonné à un thème
+  isUserSubscribedToTheme(themeId: number): Observable<boolean> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<boolean>(`${this.apiUrl}/me/themes/${themeId}/is-subscribed`, { headers });
   }
 }

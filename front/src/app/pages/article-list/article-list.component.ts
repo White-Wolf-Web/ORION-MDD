@@ -2,20 +2,17 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticleService } from '../../services/article.service';
 import { ArticleDto } from '../../models/article.model';
-import { ArticleCardComponent } from '../article-card/article-card.component';
-import { ButtonComponent } from '../button/button.component';
-
-
+import { ArticleCardComponent } from '../../components/article-card/article-card.component';
+import { ButtonComponent } from '../../components/button/button.component';
 
 @Component({
   selector: 'app-article-list',
   templateUrl: './article-list.component.html',
   imports: [ArticleCardComponent, ButtonComponent, CommonModule],
-  standalone: true,  
- 
+  standalone: true,
 })
 export class ArticleListComponent implements OnInit {
-  articles: ArticleDto[] = []; 
+  articles: ArticleDto[] = [];
   isAscending: boolean = true;
 
   constructor(private articleService: ArticleService) {}
@@ -38,7 +35,6 @@ export class ArticleListComponent implements OnInit {
 
   onSort() {
     this.isAscending = !this.isAscending;
-    this.sort.emit(this.isAscending); 
+    this.sort.emit(this.isAscending);
   }
-
 }

@@ -24,8 +24,9 @@ public class Subscription {
     @Column(length = 500)
     private String description;
 
-    @ManyToMany(mappedBy = "subscriptions")
+    @ManyToMany(mappedBy = "subscriptions", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
+
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Article> articles = new HashSet<>();

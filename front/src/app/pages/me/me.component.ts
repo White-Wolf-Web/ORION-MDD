@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SubscriptionDto } from '../../models/subscription.model';
 import { SubcriptionCardComponent } from 'src/app/components/subcription-card/subcription-card.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from 'src/app/components/button/button.component'; 
+import { ButtonComponent } from 'src/app/components/button/button.component';
 
 @Component({
   selector: 'app-me',
@@ -20,38 +20,50 @@ export class MeComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Fetch user profile
-    this.http.get('/api/me').subscribe({
+    const token = localStorage.getItem('token'); // Récupérer le token stocké
+    if (!token) {
+      console.error('Aucun token JWT trouvé.');
+      return;
+    }
+    console.log('Token récupéré:', token);
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    // Récupérer le profil utilisateur
+    this.http.get('/api/users/me', { headers }).subscribe({
       next: (data) => {
         this.user = data;
       },
       error: (error) => {
-        console.error('Error fetching user profile:', error);
+        console.error('Erreur lors de la récupération du profil utilisateur:', error);
       },
     });
 
-    // Fetch user subscriptions
-    this.http.get<SubscriptionDto[]>('/api/me/subscriptions').subscribe({
-      next: (data) => {
-        this.subscriptions = data;
-      },
-      error: (error) => {
-        console.error('Error fetching subscriptions:', error);
-      },
-    });
-  }
+   // Récupérer les abonnements de l'utilisateur
+   this.http.get<SubscriptionDto[]>('/api/users/me/themes', { headers }).subscribe({
+    next: (data) => {
+      this.subscriptions = data;
+    },
+    error: (error) => {
+      console.error('Erreur lors de la récupération des abonnements:', error);
+    },
+  });
+}
 
-  // Save updated profile information
+  // Sauvegarder les informations du profil
   saveProfile() {
-    this.http.put('/api/me', this.user).subscribe({
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.put('/api/users/me', this.user, { headers }).subscribe({
       next: () => alert('Profil mis à jour'),
-      error: (error) => console.error('Error saving profile:', error),
+      error: (error) => console.error('Erreur lors de la mise à jour du profil:', error),
     });
   }
 
-  // Handle user logout
+  // Déconnexion de l'utilisateur
   logout() {
-    // Implement logout logic, like clearing tokens
-    console.log('User logged out');
+    localStorage.removeItem('token'); // Supprime le token du stockage local
+    console.log('Utilisateur déconnecté');
   }
 }

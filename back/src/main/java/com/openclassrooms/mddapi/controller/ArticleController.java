@@ -35,17 +35,19 @@ public class ArticleController {
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-    // Récupérer les articles d'un auteur
-    @GetMapping("/author/{authorId}")
-    @Operation(summary = "Get articles by author")
+    // Récupérer un article par ID
+    @GetMapping("/{id}")
+    @Operation(summary = "Get an article by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved articles by author"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved article"),
+            @ApiResponse(responseCode = "404", description = "Article not found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    public ResponseEntity<List<ArticleDto>> getArticlesByAuthor(@PathVariable Long authorId) {
-        List<ArticleDto> articles = articleService.findArticlesByAuthorId(authorId);
-        return new ResponseEntity<>(articles, HttpStatus.OK);
+    public ResponseEntity<ArticleDto> getArticleById(@PathVariable Long id) {
+        ArticleDto article = articleService.findArticleById(id);
+        return new ResponseEntity<>(article, HttpStatus.OK);
     }
+
 
     // Créer un nouvel article (en récupérant l'utilisateur authentifié via le token JWT)
     @PostMapping
@@ -61,29 +63,4 @@ public class ArticleController {
         return new ResponseEntity<>(createdArticle, HttpStatus.CREATED);
     }
 
-    // Mettre à jour un article
-    @PutMapping("/{id}")
-    @Operation(summary = "Update an article")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated the article"),
-            @ApiResponse(responseCode = "404", description = "Article not found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    public ResponseEntity<ArticleDto> updateArticle(@PathVariable Long id, @RequestBody ArticleDto articleDto) {
-        ArticleDto updatedArticle = articleService.updateArticle(articleDto);
-        return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
-    }
-
-    // Supprimer un article
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete an article")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Successfully deleted the article"),
-            @ApiResponse(responseCode = "404", description = "Article not found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
-    })
-    public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
-        articleService.deleteArticle(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.controller;
 import com.openclassrooms.mddapi.dto.AuthLoginDto;
 import com.openclassrooms.mddapi.dto.AuthRegisterDto;
 import com.openclassrooms.mddapi.dto.JwtTokenDto;
-import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.service.AuthService;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,9 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -62,23 +62,4 @@ public class AuthController {
         }
     }
 
-    // Récupérer les informations de l'utilisateur connecté
-    @GetMapping("/me")
-    @Operation(summary = "Get current user profile")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Profile retrieved successfully"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
-    public ResponseEntity<UserDto> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserEmail = authentication.getName();  // Le nom correspond à l'email dans ce cas
-
-        UserDto user = userService.findUserByEmail(currentUserEmail);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
 }

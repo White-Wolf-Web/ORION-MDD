@@ -7,32 +7,49 @@ import { SubscriptionDto } from '../models/subscription.model';
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private apiUrl = 'http://localhost:8080/api/subscriptions';
+  private apiUrl = 'http://localhost:8080/api/topics';
 
   constructor(private http: HttpClient) {}
 
-  getAllSubscriptions(headers: HttpHeaders): Observable<SubscriptionDto[]> {
+  private createAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
+  getAllSubscriptions(): Observable<SubscriptionDto[]> {
+    const headers = this.createAuthHeaders();
     return this.http.get<SubscriptionDto[]>(this.apiUrl, { headers });
   }
 
-
   getSubscriptionById(id: string): Observable<SubscriptionDto> {
-    return this.http.get<SubscriptionDto>(`${this.apiUrl}/${id}`);
+    const headers = this.createAuthHeaders();
+    return this.http.get<SubscriptionDto>(`${this.apiUrl}/${id}`, { headers });
   }
 
   subscribe(subscriptionDto: SubscriptionDto): Observable<SubscriptionDto> {
-    return this.http.post<SubscriptionDto>(`${this.apiUrl}/subscribe`, subscriptionDto);
+    const headers = this.createAuthHeaders();
+    return this.http.post<SubscriptionDto>(`${this.apiUrl}/subscribe`, subscriptionDto, { headers });
   }
 
   subscribeToTopic(subscriptionId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/subscribe`, { id: subscriptionId });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}/subscribe`, { subscriptionId }, { headers });
   }
+  
+  
 
   getUserSubscriptions(): Observable<SubscriptionDto[]> {
-    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/my-subscriptions`);
+    const headers = this.createAuthHeaders();
+    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/my-subscriptions`, { headers });
   }
 
   unsubscribe(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/unsubscribe/${id}`);
+    const headers = this.createAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/unsubscribe/${id}`, { headers });
   }
 }

@@ -69,25 +69,22 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
-    public SubscriptionDto subscribeToTopic(SubscriptionDto subscriptionDto, String email) {
+    public SubscriptionDto subscribeToTopic(Long subscriptionId, String email) {
+        // Récupérer le sujet par son ID
+        Subscription topic = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new RuntimeException("Le sujet (topic) spécifié n'existe pas"));
 
         // Récupérer l'utilisateur connecté par son email
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        // Récupérer l'abonnement au sujet spécifié dans le DTO
-        Subscription subscription = subscriptionRepository.findById(subscriptionDto.getId())
-                .orElseThrow(() -> new RuntimeException("Le sujet (topic) spécifié n'existe pas"));
+        // Associer l'utilisateur au sujet
+        topic.getUsers().add(user);
+        subscriptionRepository.save(topic);
 
-        // Associer l'utilisateur connecté à cet abonnement
-        subscription.getUsers().add(user);
-
-        // Sauvegarder l'abonnement avec l'utilisateur ajouté
-        subscriptionRepository.save(subscription);
-
-        // Retourner l'abonnement mis à jour sous forme de DTO
-        return convertToSubscriptionDto(subscription);
+        return convertToSubscriptionDto(topic);
     }
+
 
     // Méthode pour récupérer les abonnements d'un utilisateur
     @Override

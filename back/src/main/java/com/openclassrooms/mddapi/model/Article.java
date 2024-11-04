@@ -18,21 +18,19 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(nullable = false)
     private String title;
 
-    @NotNull
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    @JoinColumn(name = "topic_id", nullable = false)  // topic_id doit être non nul pour lier chaque article à un topic
+    private Subscription topic;
 
     @ManyToOne
-    @JoinColumn(name = "topic_id", nullable = false)
-    private Subscription topic;
+    @JoinColumn(name = "author_id", nullable = false)  // Lien vers l'auteur
+    private User author;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -41,9 +39,6 @@ public class Article {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
@@ -55,4 +50,5 @@ public class Article {
         updatedAt = new Date();
     }
 }
+
 

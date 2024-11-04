@@ -6,10 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
-import { ArticleListComponent } from './components/article-list/article-list.component';
-import { ArticleCreateComponent } from './components/article-create/article-create.component';
-import { ArticleDetailsComponent } from './components/article-details/article-details.component';
-import { SubscriptionListComponent } from './components/subscription-list/subscription-list.component';
+import { ArticleListComponent } from './pages/article-list/article-list.component';
+import { ArticleCreateComponent } from './pages/article-create/article-create.component';
+import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
+import { SubscriptionListComponent } from './pages/subscription-list/subscription-list.component';
 import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 
@@ -18,9 +18,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MeComponent } from './pages/me/me.component';
 
-import { HeaderComponent } from './components/header/header.component'; 
+import { HeaderComponent } from './components/header/header.component';
 import { ButtonComponent } from './components/button/button.component';
-
 
 import { ArticleService } from './services/article.service';
 import { CommentService } from './services/comment.service';
@@ -32,27 +31,25 @@ import { UserService } from './services/user.service';
     AppComponent,
     SubscriptionDetailsComponent,
     CommentListComponent,
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     CommonModule,
-    HomeComponent,          
+    HomeComponent,
     LoginComponent,
-    RegisterComponent,    
-    MeComponent,       
+    RegisterComponent,
+    MeComponent,
     HeaderComponent,
     HttpClientModule,
     ButtonComponent,
     ArticleListComponent,
     ArticleDetailsComponent,
-    ArticleCreateComponent
-    
-  ], 
+    ArticleCreateComponent,
+  ],
 
   providers: [ArticleService, CommentService, SubscriptionService, UserService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -19,7 +19,7 @@ public interface SubscriptionService {
     SubscriptionDto updateSubscription(SubscriptionDto subscriptionDto);
 
     // S'abonner à un sujet
-    SubscriptionDto subscribeToTopic(SubscriptionDto subscriptionDto, String email);
+    SubscriptionDto subscribeToTopic(Long subscriptionId, String email);
 
     List<SubscriptionDto> findSubscriptionsByUser(String email);
 

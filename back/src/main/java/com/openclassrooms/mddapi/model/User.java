@@ -41,16 +41,15 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Article> articles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "USER_SUBSCRIPTIONS",
+            name = "user_subscriptions",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "subscription_id")
     )
     private Set<Subscription> subscriptions = new HashSet<>();
+
+
 
     @PrePersist
     protected void onCreate() {
@@ -62,4 +61,3 @@ public class User {
         updatedAt = new Date();
     }
 }
-
