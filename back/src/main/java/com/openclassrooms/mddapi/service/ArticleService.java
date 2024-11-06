@@ -1,18 +1,14 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.ArticleDto;
+import com.openclassrooms.mddapi.dto.ArticleCreationDTO;
+import com.openclassrooms.mddapi.dto.ArticleDTO;
 import com.openclassrooms.mddapi.model.Article;
+import com.openclassrooms.mddapi.model.User;
 
 import java.util.List;
 
 public interface ArticleService {
-
-    ArticleDto saveArticle(ArticleDto articleDto, String username);  // Associer l'article à l'utilisateur
-
-    // Trouver un article par ID
-    ArticleDto findArticleById(Long id);
-
-    List<ArticleDto> findAllArticles();  // Retourner une liste des Articles
-
-
+    List<ArticleDTO> getAllArticles();
+    ArticleDTO getArticleById(Long id);
+    Article createArticle(ArticleCreationDTO articleCreationDTO, User author);
 }

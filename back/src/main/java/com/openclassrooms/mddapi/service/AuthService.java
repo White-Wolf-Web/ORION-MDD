@@ -1,13 +1,10 @@
 package com.openclassrooms.mddapi.service;
 
-
-import com.openclassrooms.mddapi.dto.AuthLoginDto;
-import com.openclassrooms.mddapi.dto.AuthRegisterDto;
-import com.openclassrooms.mddapi.dto.JwtTokenDto;
+import com.openclassrooms.mddapi.dto.UserLoginDTO;
+import com.openclassrooms.mddapi.dto.UserRegistrationDTO;
 
 public interface AuthService {
+    void registerUser(UserRegistrationDTO registrationDTO);
 
-    JwtTokenDto login(AuthLoginDto loginDto);
-
-    void register(AuthRegisterDto registerDto);
+    String loginUser(UserLoginDTO loginDTO);
 }

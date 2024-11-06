@@ -1,8 +1,8 @@
 package com.openclassrooms.mddapi.configuration;
 
+import com.openclassrooms.mddapi.security.CustomUserDetailsService;
 import com.openclassrooms.mddapi.security.JwtAuthenticationEntryPoint;
 import com.openclassrooms.mddapi.security.JwtAuthenticationFilter;
-import com.openclassrooms.mddapi.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,14 +40,13 @@ public class SpringSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Politique de gestion de session
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))  // Gestion des exceptions
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()  // Autoriser les requêtes POST vers /api/auth
-                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger
-                        .requestMatchers(HttpMethod.GET, "/api/subscriptions/**").authenticated()
-
-                        .anyRequest().authenticated()  // Toutes les autres requêtes nécessitent une authentification
+                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()  // Autoriser /auth/register et /auth/login
+                        .requestMatchers(HttpMethod.POST, "/articles").authenticated() // Autoriser uniquement les utilisateurs authentifiés
+                        .requestMatchers(HttpMethod.GET, "/articles").permitAll()      // Autoriser tous les utilisateurs pour GET
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger UI et la documentation API
+                        .anyRequest().authenticated()
                 );
 
-        // Ajouter le filtre JWT avant le filtre d'authentification UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

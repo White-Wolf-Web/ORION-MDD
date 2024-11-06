@@ -1,13 +1,15 @@
 package com.openclassrooms.mddapi.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtTokenDto {
+public class TopicDTO {
 
-    private String token;
+    private Long id;
+    private String name;
+    private String description;
 }

@@ -1,13 +1,13 @@
 package com.openclassrooms.mddapi.dto;
 
+
+import lombok.Getter;
+import lombok.Setter;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
-public class JwtTokenDto {
-
+public class AuthResponseDTO {
     private String token;
 }

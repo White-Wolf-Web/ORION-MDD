@@ -1,8 +1,11 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.CommentDto;
+import com.openclassrooms.mddapi.dto.CommentDTO;
+import com.openclassrooms.mddapi.dto.CommentCreationDTO;
+
+import java.util.List;
 
 public interface CommentService {
-    CommentDto postComment(CommentDto commentDto, String email);  // Méthode pour poster un commentaire
-    boolean deleteComment(Long commentId, String email);  // Méthode pour supprimer un commentaire
+    List<CommentDTO> getAllComments(Long articleId);
+    void addComment(Long articleId, CommentCreationDTO commentDTO);
 }
