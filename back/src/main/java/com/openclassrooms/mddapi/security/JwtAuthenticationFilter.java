@@ -30,18 +30,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
         String token = null;
-        String username = null;
+        String email = null;
 
-        // Vérifie si le header contient un token valide avec "Bearer "
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            username = jwtTokenUtil.getUsernameFromToken(token);
+            email = jwtTokenUtil.getEmailFromToken(token);  // Utilise l'email extrait
         }
 
-        // Si le nom d'utilisateur est valide et que le contexte de sécurité est vide, authentifier
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtTokenUtil.validateToken(token)) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);  // Charge l'utilisateur par email
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -51,6 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {

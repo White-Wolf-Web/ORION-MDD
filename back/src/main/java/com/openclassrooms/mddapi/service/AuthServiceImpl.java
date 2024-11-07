@@ -50,9 +50,7 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Mot de passe incorrect");
         }
 
-        // Générer un vrai token JWT en utilisant JwtTokenUtil
-        return jwtTokenUtil.generateToken(user.getUsername());
+        // Générer un token JWT avec l'email
+        return jwtTokenUtil.generateToken(user.getEmail());
     }
 }
-
-

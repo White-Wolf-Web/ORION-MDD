@@ -9,6 +9,5 @@ public interface UserService {
     void updateUserProfile(UserProfileDTO profileDTO);
     void subscribeToTopic(Long topicId);
     void unsubscribeFromTopic(Long topicId);
-
-    User findByUsername(String username);
+    User findByEmail(String email);
 }

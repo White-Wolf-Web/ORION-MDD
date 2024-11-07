@@ -48,6 +48,4 @@ public class User {
     @JsonIgnore
     private Set<Topic> subscriptions = new HashSet<>();
 
-
-
 }

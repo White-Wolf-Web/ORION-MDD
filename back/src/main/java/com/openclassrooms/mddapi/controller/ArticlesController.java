@@ -56,7 +56,7 @@ public class ArticlesController {
             @RequestBody ArticleCreationDTO articleCreationDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
         try {
-            User author = userService.findByUsername(userDetails.getUsername());
+            User author = userService.findByEmail(userDetails.getUsername()); // Utilisation de findByEmail
             Article article = articleService.createArticle(articleCreationDTO, author);
             return ResponseEntity.status(HttpStatus.CREATED).body(article);
         } catch (Exception e) {
@@ -64,4 +64,3 @@ public class ArticlesController {
         }
     }
 }
-

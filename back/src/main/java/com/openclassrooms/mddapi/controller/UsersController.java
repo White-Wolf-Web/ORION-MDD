@@ -29,9 +29,11 @@ public class UsersController {
             throw new IllegalArgumentException("Utilisateur non authentifié");
         }
 
-        User user = userService.findByUsername(userDetails.getUsername());
+        // Utiliser l'email pour récupérer l'utilisateur
+        User user = userService.findByEmail(userDetails.getUsername()); // getUsername() renvoie l'email dans ce contexte
         return new UserProfileDTO(user.getUsername(), user.getEmail());
     }
+
 
     @Operation(summary = "Modifier le profil utilisateur")
     @PutMapping("/me")

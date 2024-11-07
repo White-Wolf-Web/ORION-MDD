@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         user.setUsername(profileDTO.getUsername());
         user.setEmail(profileDTO.getEmail());
-
         userRepository.save(user);
     }
 
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
-
         user.getSubscriptions().add(topic);
         userRepository.save(user);
     }
@@ -51,24 +49,21 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
-
         user.getSubscriptions().remove(topic);
         userRepository.save(user);
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
     }
 
     private User getCurrentUser() {
-        // Récupère l'utilisateur authentifié à partir du contexte de sécurité
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            return findByUsername(username);
+            String email = ((UserDetails) principal).getUsername(); // email est retourné par getUsername() ici
+            return findByEmail(email);
         } else {
             throw new IllegalArgumentException("Utilisateur non authentifié");
         }
