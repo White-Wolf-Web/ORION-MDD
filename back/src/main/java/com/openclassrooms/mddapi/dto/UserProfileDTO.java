@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,5 +20,7 @@ public class UserProfileDTO {
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "Format de l'email invalide")
     private String email;
+
+    private List<String> subscribedTopics;
 
 }

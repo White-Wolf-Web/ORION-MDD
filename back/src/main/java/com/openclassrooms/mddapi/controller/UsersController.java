@@ -5,11 +5,14 @@ import com.openclassrooms.mddapi.dto.UserProfileDTO;
 import com.openclassrooms.mddapi.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("/users")
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
 
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     public UsersController(UserService userService) {
         this.userService = userService;
@@ -24,15 +28,23 @@ public class UsersController {
 
     @Operation(summary = "Consulter le profil utilisateur")
     @GetMapping("/me")
-    public UserProfileDTO getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
-            throw new IllegalArgumentException("Utilisateur non authentifié");
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        logger.info("Requête reçue pour /users/me");
+        try {
+            if (userDetails == null) {
+                logger.warn("Utilisateur non authentifié");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utilisateur non authentifié");
+            }
+            UserProfileDTO profile = userService.getUserProfile();
+            logger.info("Profil utilisateur récupéré avec succès : {}", profile);
+            return ResponseEntity.ok(profile);
+        } catch (Exception e) {
+            logger.error("Erreur lors de la récupération du profil utilisateur : {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-
-        // Utiliser l'email pour récupérer l'utilisateur
-        User user = userService.findByEmail(userDetails.getUsername()); // getUsername() renvoie l'email dans ce contexte
-        return new UserProfileDTO(user.getUsername(), user.getEmail());
     }
+
 
 
     @Operation(summary = "Modifier le profil utilisateur")
