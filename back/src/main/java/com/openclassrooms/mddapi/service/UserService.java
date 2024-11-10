@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface UserService {
     UserProfileDTO getUserProfile();
-    void updateUserProfile(UserProfileDTO profileDTO);
+    boolean updateUserProfile(UserProfileDTO profileDTO);
+
     void subscribeToTopic(Long topicId);
     void unsubscribeFromTopic(Long topicId);
     User findByEmail(String email);

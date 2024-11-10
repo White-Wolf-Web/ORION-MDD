@@ -54,7 +54,12 @@ public class UsersController {
     @PutMapping("/me")
     public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UserProfileDTO profileDTO) {
         try {
-            userService.updateUserProfile(profileDTO);
+            boolean emailChanged = userService.updateUserProfile(profileDTO);
+
+            if (emailChanged) {
+                return ResponseEntity.ok("Profil mis à jour avec succès. Veuillez vous reconnecter.");
+            }
+
             return ResponseEntity.ok("Profil mis à jour avec succès");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -62,6 +67,8 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour du profil");
         }
     }
+
+
 
 
     @Operation(summary = "S'abonner à un thème")

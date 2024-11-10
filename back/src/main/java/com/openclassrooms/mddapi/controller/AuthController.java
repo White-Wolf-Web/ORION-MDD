@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.AuthResponseDTO;
+import com.openclassrooms.mddapi.dto.JwtTokenDto;
 import com.openclassrooms.mddapi.dto.UserLoginDTO;
 import com.openclassrooms.mddapi.dto.UserRegistrationDTO;
 import com.openclassrooms.mddapi.service.AuthService;
@@ -40,11 +41,12 @@ public class AuthController {
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDTO loginDTO) {
         try {
             String token = authService.loginUser(loginDTO);
-            return ResponseEntity.ok(new AuthResponseDTO(token));
+            return ResponseEntity.ok(new JwtTokenDto(token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
 
 
 }
