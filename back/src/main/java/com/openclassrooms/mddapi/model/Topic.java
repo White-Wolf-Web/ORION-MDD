@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class Topic {
     private String description;
 
     @ManyToMany(mappedBy = "subscriptions")
+    @JsonIgnore
     private Set<User> subscribedUsers = new HashSet<>();
 
 

@@ -7,24 +7,29 @@ import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.repository.TopicRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @Transactional
 public class ArticleServiceImpl implements ArticleService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
+
     private final ArticleRepository articleRepository;
     private final TopicRepository topicRepository;
+    private final UserService userService;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository, TopicRepository topicRepository) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, TopicRepository topicRepository, UserService userService) {
         this.articleRepository = articleRepository;
         this.topicRepository = topicRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -53,17 +58,25 @@ public class ArticleServiceImpl implements ArticleService {
         );
     }
 
-
     @Override
     public Article createArticle(ArticleCreationDTO articleCreationDTO, User author) {
+        Long topicId = articleCreationDTO.getTopicId();
+
+        // Log pour vérifier l'ID du thème et l'utilisateur
+        logger.info("Tentative de création d'article par {} pour le thème {}", author.getEmail(), topicId);
+
+        // Vérifiez si l'utilisateur est abonné au thème spécifié
+        if (!userService.isUserSubscribedToTopic(topicId)) {
+            throw new IllegalArgumentException("Vous devez être abonné à ce thème pour y créer un article.");
+        }
+
+        Topic topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
+
         Article article = new Article();
         article.setTitle(articleCreationDTO.getTitle());
         article.setContent(articleCreationDTO.getContent());
         article.setAuthor(author);
-        article.setCreatedAt(LocalDateTime.now());
-
-        Topic topic = topicRepository.findById(articleCreationDTO.getTopicId())
-                .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
         article.setTopic(topic);
 
         return articleRepository.save(article);

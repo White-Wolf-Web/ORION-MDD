@@ -155,5 +155,14 @@ public class UserServiceImpl implements UserService {
         return topicRepository.findByUserSubscription(currentUser); // Utilise la méthode personnalisée pour obtenir les topics
     }
 
+    @Override
+    public boolean isUserSubscribedToTopic(Long topicId) {
+        Long userId = getCurrentUser().getId();
+        return userRepository.isUserSubscribedToTopic(userId, topicId);
+    }
+
+
+
+
 
 }

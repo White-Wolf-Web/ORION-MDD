@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "DELETE FROM user_subscriptions WHERE user_id = :userId AND topic_id = :topicId", nativeQuery = true)
     int removeUserSubscription(@Param("userId") Long userId, @Param("topicId") Long topicId);
 
+    @Query("SELECT COUNT(u) > 0 FROM User u JOIN u.subscriptions s WHERE u.id = :userId AND s.id = :topicId")
+    boolean isUserSubscribedToTopic(@Param("userId") Long userId, @Param("topicId") Long topicId);
 
     Optional<User> findByEmail(String email);
 }

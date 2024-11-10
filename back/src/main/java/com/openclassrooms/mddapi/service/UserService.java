@@ -16,6 +16,8 @@ public interface UserService {
     void unsubscribeFromTopic(Long topicId);
     User findByEmail(String email);
 
+    boolean isUserSubscribedToTopic(Long topicId);
+
     TopicDTO getUserSubscriptionById(Long topicId);
 
     List<Topic> getUserSubscriptions();
