@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,13 +50,14 @@ public class UserServiceImpl implements UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String email = ((UserDetails) principal).getUsername();
-            logger.info("Email de l'utilisateur courant : {}", email);
+            logger.info("Email de l'utilisateur authentifié : {}", email);
             return email;
         } else {
-            logger.warn("Utilisateur non authentifié lors de la récupération de l'email");
+            logger.warn("Échec de la récupération de l'email : principal n'est pas UserDetails, valeur obtenue : {}", principal);
             throw new IllegalArgumentException("Utilisateur non authentifié");
         }
     }
+
 
     @Override
     public void updateUserProfile(UserProfileDTO profileDTO) {
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void subscribeToTopic(Long topicId) {
-        User currentUser = getCurrentUser(); // Récupère l'utilisateur connecté
+        User currentUser = getCurrentUser();
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
 
@@ -79,20 +79,45 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Transactional
+    public void unsubscribeFromTopic(Long topicId) {
+        User currentUser = getCurrentUser();
+        Topic topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new RuntimeException("Topic not found"));
+
+        if (!currentUser.getSubscriptions().contains(topic)) {
+            logger.warn("L'utilisateur {} n'est pas abonné au thème {}", currentUser.getEmail(), topicId);
+            return;
+        }
+
+        logger.info("Abonnements actuels de l'utilisateur {} avant suppression : {}",
+                currentUser.getEmail(),
+                currentUser.getSubscriptions().stream().map(Topic::getId).collect(Collectors.toList()));
+
+        // Supprime le topic de la liste des abonnements de l'utilisateur
+        currentUser.getSubscriptions().remove(topic);
+
+        // Vérifiez si la suppression fonctionne sans une suppression explicite de l'autre côté
+        userRepository.save(currentUser); // Assure la persistance de la mise à jour
+
+        logger.info("Abonnements actuels de l'utilisateur {} après suppression : {}",
+                currentUser.getEmail(),
+                currentUser.getSubscriptions().stream().map(Topic::getId).collect(Collectors.toList()));
+    }
 
     @Override
-    public void unsubscribeFromTopic(Long topicId) {
-        User user = getCurrentUser();
-        Topic topic = topicRepository.findById(topicId)
-                .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
+    @Transactional(readOnly = true)
+    public TopicDTO getUserSubscriptionById(Long topicId) {
+        User currentUser = getCurrentUser();
+        Topic topic = topicRepository.findByUserSubscription(currentUser).stream()
+                .filter(t -> t.getId().equals(topicId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Abonnement non trouvé pour l'utilisateur"));
 
-        if (user.getSubscriptions().contains(topic)) {
-            user.getSubscriptions().remove(topic);
-            userRepository.save(user);
-        } else {
-            throw new IllegalArgumentException("L'utilisateur n'est pas abonné à ce thème");
-        }
+        return new TopicDTO(topic.getId(), topic.getName(), topic.getDescription());
     }
+
+
 
 
 
@@ -119,6 +144,9 @@ public class UserServiceImpl implements UserService {
         User currentUser = getCurrentUser(); // Obtient l'utilisateur actuellement connecté
         return topicRepository.findByUserSubscription(currentUser); // Utilise la méthode personnalisée pour obtenir les topics
     }
+
+
+
 
 
 }

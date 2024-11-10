@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.TopicDTO;
 import com.openclassrooms.mddapi.dto.UserProfileDTO;
+import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -62,7 +63,7 @@ public class UsersController {
 
     @Operation(summary = "S'abonner à un thème")
     @PostMapping("/topics/{topicId}")
-    public ResponseEntity<?> subscribeToTopic(@PathVariable Long topicId) {
+    public ResponseEntity<?> subscribeToTopic(@PathVariable("topicId") Long topicId) {
         try {
             userService.subscribeToTopic(topicId);
             return ResponseEntity.ok().build();
@@ -81,6 +82,18 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
+    @Operation(summary = "Récupérer un abonnement spécifique")
+    @GetMapping("/subscriptions/{topicId}")
+    public ResponseEntity<TopicDTO> getUserSubscriptionById(@PathVariable("topicId") Long topicId) {
+        TopicDTO topicDTO = userService.getUserSubscriptionById(topicId);
+        return ResponseEntity.ok(topicDTO);
+    }
+
+
+
+
 
 
 
