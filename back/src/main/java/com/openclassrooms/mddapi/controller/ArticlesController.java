@@ -6,6 +6,9 @@ import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.service.ArticleService;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,15 +41,23 @@ public class ArticlesController {
         }
     }
 
-    @Operation(summary = "Consulter un article par ID")
+    @Operation(summary = "Consulter un article par ID", description = "Récupère un article spécifique en fournissant son ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Article trouvé"),
+            @ApiResponse(responseCode = "404", description = "Article non trouvé")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<?> getArticleById(@PathVariable Long id) {
+    public ResponseEntity<?> getArticleById(
+            @Parameter(description = "ID de l'article à consulter", required = true, example = "1")
+            @PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(articleService.getArticleById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+
 
     @Operation(summary = "Créer un nouvel article")
     @PostMapping
