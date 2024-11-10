@@ -2,7 +2,6 @@ package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.TopicDTO;
 import com.openclassrooms.mddapi.dto.UserProfileDTO;
-import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,15 +72,16 @@ public class UsersController {
     }
 
     @Operation(summary = "Se désabonner d'un thème")
-    @DeleteMapping("/topics/{topicId}")
+    @DeleteMapping("/subscriptions/{topicId}")
     public ResponseEntity<?> unsubscribeFromTopic(@PathVariable("topicId") Long topicId) {
         try {
             userService.unsubscribeFromTopic(topicId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Abonnement supprimé avec succès.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 
 
     @Operation(summary = "Récupérer un abonnement spécifique")
@@ -90,12 +90,6 @@ public class UsersController {
         TopicDTO topicDTO = userService.getUserSubscriptionById(topicId);
         return ResponseEntity.ok(topicDTO);
     }
-
-
-
-
-
-
 
 
     @Operation(summary = "Afficher les abonnements de l'utilisateur")
@@ -107,7 +101,6 @@ public class UsersController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(subscriptions);
     }
-
 
 
 }

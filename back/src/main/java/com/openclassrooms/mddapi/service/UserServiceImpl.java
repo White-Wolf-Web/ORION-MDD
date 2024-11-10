@@ -7,6 +7,7 @@ import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     @Transactional(readOnly = true)
@@ -79,31 +83,23 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
     @Transactional
     public void unsubscribeFromTopic(Long topicId) {
         User currentUser = getCurrentUser();
-        Topic topic = topicRepository.findById(topicId)
-                .orElseThrow(() -> new RuntimeException("Topic not found"));
 
-        if (!currentUser.getSubscriptions().contains(topic)) {
-            logger.warn("L'utilisateur {} n'est pas abonné au thème {}", currentUser.getEmail(), topicId);
-            return;
+        // Appel direct à la méthode de suppression
+        int rowsAffected = userRepository.removeUserSubscription(currentUser.getId(), topicId);
+        if (rowsAffected == 0) {
+            throw new IllegalArgumentException("L'utilisateur n'est pas abonné à ce thème.");
         }
 
-        logger.info("Abonnements actuels de l'utilisateur {} avant suppression : {}",
-                currentUser.getEmail(),
-                currentUser.getSubscriptions().stream().map(Topic::getId).collect(Collectors.toList()));
-
-        // Supprime le topic de la liste des abonnements de l'utilisateur
-        currentUser.getSubscriptions().remove(topic);
-
-        // Vérifiez si la suppression fonctionne sans une suppression explicite de l'autre côté
-        userRepository.save(currentUser); // Assure la persistance de la mise à jour
-
-        logger.info("Abonnements actuels de l'utilisateur {} après suppression : {}",
-                currentUser.getEmail(),
-                currentUser.getSubscriptions().stream().map(Topic::getId).collect(Collectors.toList()));
+        logger.info("Abonnement au thème {} supprimé pour l'utilisateur {}", topicId, currentUser.getEmail());
     }
+
+
+
+
 
     @Override
     @Transactional(readOnly = true)
@@ -116,10 +112,6 @@ public class UserServiceImpl implements UserService {
 
         return new TopicDTO(topic.getId(), topic.getName(), topic.getDescription());
     }
-
-
-
-
 
 
     @Override
@@ -144,9 +136,6 @@ public class UserServiceImpl implements UserService {
         User currentUser = getCurrentUser(); // Obtient l'utilisateur actuellement connecté
         return topicRepository.findByUserSubscription(currentUser); // Utilise la méthode personnalisée pour obtenir les topics
     }
-
-
-
 
 
 }
