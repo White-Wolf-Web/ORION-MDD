@@ -2,10 +2,9 @@ package com.openclassrooms.mddapi.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 
@@ -21,6 +20,6 @@ public class UserProfileDTO {
     @Email(message = "Format de l'email invalide")
     private String email;
 
-    private List<String> subscribedTopics;
+    private List<TopicDTO> subscriptions;
 
 }

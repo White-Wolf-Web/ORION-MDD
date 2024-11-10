@@ -1,9 +1,10 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.TopicDTO;
 import com.openclassrooms.mddapi.dto.UserProfileDTO;
+import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
-import com.openclassrooms.mddapi.projections.UserWithSubscriptions;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.slf4j.Logger;
@@ -30,17 +31,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional(readOnly = true)
     public UserProfileDTO getUserProfile() {
         User user = userRepository.findUserWithSubscriptionsByEmail(getCurrentUserEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
-        List<String> subscribedTopics = user.getSubscriptions().stream()
-                .map(Topic::getName)
+        List<TopicDTO> subscriptions = user.getSubscriptions().stream()
+                .map(topic -> new TopicDTO(topic.getId(), topic.getName(), topic.getDescription()))
                 .collect(Collectors.toList());
 
-        return new UserProfileDTO(user.getUsername(), user.getEmail(), subscribedTopics);
+        return new UserProfileDTO(user.getUsername(), user.getEmail(), subscriptions);
     }
 
     private String getCurrentUserEmail() {
@@ -55,32 +59,43 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     public void updateUserProfile(UserProfileDTO profileDTO) {
         User user = getCurrentUser();
-        user.setUsername(profileDTO.getUsername());
-        user.setEmail(profileDTO.getEmail());
+        userMapper.toEntity(profileDTO, user);
         userRepository.save(user);
     }
 
     @Override
     public void subscribeToTopic(Long topicId) {
-        User user = getCurrentUser();
+        User currentUser = getCurrentUser(); // Récupère l'utilisateur connecté
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
-        user.getSubscriptions().add(topic);
-        userRepository.save(user);
+
+        if (!currentUser.getSubscriptions().contains(topic)) {
+            currentUser.getSubscriptions().add(topic);
+            userRepository.save(currentUser); // Assure la persistance de l'abonnement
+        }
     }
+
+
 
     @Override
     public void unsubscribeFromTopic(Long topicId) {
         User user = getCurrentUser();
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new IllegalArgumentException("Thème non trouvé"));
-        user.getSubscriptions().remove(topic);
-        userRepository.save(user);
+
+        if (user.getSubscriptions().contains(topic)) {
+            user.getSubscriptions().remove(topic);
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("L'utilisateur n'est pas abonné à ce thème");
+        }
     }
+
+
+
 
     @Override
     public User findByEmail(String email) {
@@ -101,8 +116,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<Topic> getUserSubscriptions() {
-        User currentUser = getCurrentUser();
-        return new ArrayList<>(currentUser.getSubscriptions());
+        User currentUser = getCurrentUser(); // Obtient l'utilisateur actuellement connecté
+        return topicRepository.findByUserSubscription(currentUser); // Utilise la méthode personnalisée pour obtenir les topics
     }
+
 
 }

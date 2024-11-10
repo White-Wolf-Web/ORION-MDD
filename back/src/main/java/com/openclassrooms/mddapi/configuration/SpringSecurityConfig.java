@@ -43,6 +43,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()  // Autoriser /auth/register et /auth/login
                         .requestMatchers(HttpMethod.POST, "/articles").authenticated() // Autoriser uniquement les utilisateurs authentifiés
                         .requestMatchers(HttpMethod.GET, "/articles").permitAll()      // Autoriser tous les utilisateurs pour GET
+                        .requestMatchers(HttpMethod.GET, "/users/me/**").authenticated()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger UI et la documentation API
                         .anyRequest().authenticated()
                 );

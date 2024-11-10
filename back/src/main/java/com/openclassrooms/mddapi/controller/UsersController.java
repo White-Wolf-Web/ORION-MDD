@@ -1,8 +1,8 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.service.UserService;
+import com.openclassrooms.mddapi.dto.TopicDTO;
 import com.openclassrooms.mddapi.dto.UserProfileDTO;
-import com.openclassrooms.mddapi.model.User;
+import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -11,16 +11,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 @Tag(name = "UsersController", description = "Gestion des utilisateurs et abonnements")
 public class UsersController {
 
-    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
+    private final UserService userService;
 
     public UsersController(UserService userService) {
         this.userService = userService;
@@ -44,7 +47,6 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 
 
     @Operation(summary = "Modifier le profil utilisateur")
@@ -71,7 +73,7 @@ public class UsersController {
 
     @Operation(summary = "Se désabonner d'un thème")
     @DeleteMapping("/topics/{topicId}")
-    public ResponseEntity<?> unsubscribeFromTopic(@PathVariable Long topicId) {
+    public ResponseEntity<?> unsubscribeFromTopic(@PathVariable("topicId") Long topicId) {
         try {
             userService.unsubscribeFromTopic(topicId);
             return ResponseEntity.ok().build();
@@ -79,4 +81,20 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
+
+
+    @Operation(summary = "Afficher les abonnements de l'utilisateur")
+    @GetMapping("/me/subscriptions")
+    public ResponseEntity<List<TopicDTO>> getUserSubscriptions() {
+        List<TopicDTO> subscriptions = userService.getUserSubscriptions()
+                .stream()
+                .map(topic -> new TopicDTO(topic.getId(), topic.getName(), topic.getDescription()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(subscriptions);
+    }
+
+
+
 }

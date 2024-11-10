@@ -4,7 +4,6 @@ import com.openclassrooms.mddapi.dto.UserProfileDTO;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

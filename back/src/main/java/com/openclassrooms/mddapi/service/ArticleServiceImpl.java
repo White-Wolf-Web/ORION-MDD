@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.ArticleDTO;
 import com.openclassrooms.mddapi.dto.ArticleCreationDTO;
+import com.openclassrooms.mddapi.dto.ArticleDTO;
 import com.openclassrooms.mddapi.model.Article;
 import com.openclassrooms.mddapi.model.Topic;
 import com.openclassrooms.mddapi.model.User;

@@ -1,7 +1,7 @@
 package com.openclassrooms.mddapi.service;
 
-import com.openclassrooms.mddapi.dto.CommentDTO;
 import com.openclassrooms.mddapi.dto.CommentCreationDTO;
+import com.openclassrooms.mddapi.dto.CommentDTO;
 
 import java.util.List;
 
