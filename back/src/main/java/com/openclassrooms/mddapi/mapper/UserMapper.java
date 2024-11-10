@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     public UserProfileDTO toDTO(User user) {
-        // Map each Topic to a TopicDTO, providing id, name, and description
+        // Map chaque Topic en un TopicDTO, en fournissant id, name et description
         List<TopicDTO> subscribedTopics = user.getSubscriptions().stream()
                 .map(topic -> new TopicDTO(topic.getId(), topic.getName(), topic.getDescription()))
                 .collect(Collectors.toList());
         return new UserProfileDTO(user.getUsername(), user.getEmail(), subscribedTopics);
     }
 
-    public User toEntity(UserProfileDTO userProfileDTO, User user) {
+    public void toEntity(UserProfileDTO userProfileDTO, User user) {
         user.setUsername(userProfileDTO.getUsername());
         user.setEmail(userProfileDTO.getEmail());
-        return user;
+
     }
 }
 

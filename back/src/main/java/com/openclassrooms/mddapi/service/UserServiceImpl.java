@@ -64,11 +64,20 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void updateUserProfile(UserProfileDTO profileDTO) {
         User user = getCurrentUser();
+
+        // Check if email already exists (and is not the current user's email)
+        if (!user.getEmail().equals(profileDTO.getEmail()) && userRepository.existsByEmail(profileDTO.getEmail())) {
+            throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur.");
+        }
+
+        // Update user fields
         userMapper.toEntity(profileDTO, user);
         userRepository.save(user);
     }
+
 
     @Override
     public void subscribeToTopic(Long topicId) {

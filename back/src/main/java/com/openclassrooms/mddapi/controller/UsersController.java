@@ -5,6 +5,7 @@ import com.openclassrooms.mddapi.dto.UserProfileDTO;
 import com.openclassrooms.mddapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -51,14 +52,17 @@ public class UsersController {
 
     @Operation(summary = "Modifier le profil utilisateur")
     @PutMapping("/me")
-    public ResponseEntity<?> updateUserProfile(@RequestBody UserProfileDTO profileDTO) {
+    public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UserProfileDTO profileDTO) {
         try {
             userService.updateUserProfile(profileDTO);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
+            return ResponseEntity.ok("Profil mis à jour avec succès");
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour du profil");
         }
     }
+
 
     @Operation(summary = "S'abonner à un thème")
     @PostMapping("/topics/{topicId}")
