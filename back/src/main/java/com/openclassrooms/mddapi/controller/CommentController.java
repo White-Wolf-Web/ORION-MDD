@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/articles/{articleId}/comments")
+@RequestMapping("/api/articles/{articleId}/comments")
 @Tag(name = "CommentController", description = "Gestion des commentaires")
 public class CommentController {
 

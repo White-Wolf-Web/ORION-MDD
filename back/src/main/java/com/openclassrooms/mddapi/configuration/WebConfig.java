@@ -14,12 +14,14 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200")  // Autorise les requêtes depuis Angular sur localhost:4200
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")  // Méthodes autorisées
-                        .allowedHeaders("Authorization", "Cache-Control", "Content-Type")  // Headers autorisés
-                        .allowCredentials(true)  // Autorise l'envoi de cookies, si nécessaire
-                        .maxAge(3600);  // Temps en secondes pour la mise en cache de la requête de pré-vérification
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                        .allowedHeaders("Authorization", "Cache-Control", "Content-Type")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
     }
 }
+
+

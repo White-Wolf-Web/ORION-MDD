@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/articles")
+@RequestMapping("/api/articles")
 @Tag(name = "ArticlesController", description = "Gestion des articles")
 public class ArticlesController {
 

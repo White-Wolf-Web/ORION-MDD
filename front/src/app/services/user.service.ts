@@ -26,11 +26,11 @@ export class UserService {
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-
+/*
   // Vérifier si l'utilisateur est abonné à un thème
   isUserSubscribedToTheme(themeId: number): Observable<boolean> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<boolean>(`${this.apiUrl}/me/themes/${themeId}/is-subscribed`, { headers });
-  }
+    return this.http.get<boolean>(`${this.apiUrl}/me/subscriptions/${themeId}/is-subscribed`, { headers });
+  }*/
 }

@@ -1,4 +1,4 @@
-<div class="p-4 gap-4 flex justify-center flex-wrap ">
+<div class="p-4 gap-4 flex justify-center flex-wrap">
   <div *ngFor="let subscription of subscriptions" class="mb-4">
     <app-subcription-card
       [title]="subscription.name || 'Titre non disponible'"
@@ -6,5 +6,4 @@
       [subscriptionId]="subscription.id"
     ></app-subcription-card>
   </div>
-  
 </div>

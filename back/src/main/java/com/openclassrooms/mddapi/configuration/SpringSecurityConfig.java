@@ -35,22 +35,25 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Désactiver CSRF et configurer la gestion des sessions
         http
-                .csrf(AbstractHttpConfigurer::disable)  // Nouvelle syntaxe pour désactiver CSRF
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Politique de gestion de session
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))  // Gestion des exceptions
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login").permitAll()  // Autoriser /auth/register et /auth/login
-                        .requestMatchers(HttpMethod.POST, "/articles").authenticated() // Autoriser uniquement les utilisateurs authentifiés
-                        .requestMatchers(HttpMethod.GET, "/articles").permitAll()      // Autoriser tous les utilisateurs pour GET
-                        .requestMatchers(HttpMethod.GET, "/users/me/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/users/subscriptions/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/articles").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/articles/**").authenticated()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger UI et la documentation API
-                        .anyRequest().authenticated()
-                );
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
 
+        // Configurer les autorisations
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/articles/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/users/me/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "api/topics").authenticated()
+                .anyRequest().authenticated()
+        );
+
+        // Ajouter le filtre JWT
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

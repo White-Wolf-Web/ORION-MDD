@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @Tag(name = "UsersController", description = "Gestion des utilisateurs et abonnements")
 public class UsersController {
 

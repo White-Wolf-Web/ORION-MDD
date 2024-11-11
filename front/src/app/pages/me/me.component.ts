@@ -40,7 +40,7 @@ export class MeComponent implements OnInit {
     });
 
    // Récupérer les abonnements de l'utilisateur
-   this.http.get<SubscriptionDto[]>('/api/users/me/themes', { headers }).subscribe({
+   this.http.get<SubscriptionDto[]>('/api/users/me/subscriptions', { headers }).subscribe({
     next: (data) => {
       this.subscriptions = data;
     },

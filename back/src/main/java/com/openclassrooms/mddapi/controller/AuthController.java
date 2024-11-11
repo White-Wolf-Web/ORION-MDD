@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.controller;
 
-import com.openclassrooms.mddapi.dto.AuthResponseDTO;
 import com.openclassrooms.mddapi.dto.JwtTokenDto;
 import com.openclassrooms.mddapi.dto.UserLoginDTO;
 import com.openclassrooms.mddapi.dto.UserRegistrationDTO;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Tag(name = "AuthController", description = "Gestion de l'authentification")
 public class AuthController {
 
@@ -46,7 +45,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
-
 
 
 }

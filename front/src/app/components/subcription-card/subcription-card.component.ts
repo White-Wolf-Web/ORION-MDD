@@ -19,11 +19,12 @@ export class SubcriptionCardComponent {
   onSubscribe() {
     this.subscriptionService.subscribeToTopic(this.subscriptionId).subscribe(
       () => {
-        console.log('Subscription successful');
+        console.log('Abonnement réussi');
       },
       (error) => {
-        console.error('Subscription failed:', error);
+        console.error('Échec de l’abonnement:', error);
       }
     );
   }
 }
+

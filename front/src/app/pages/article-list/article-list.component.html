@@ -1,10 +1,11 @@
 <div class="flex flex-col md:flex-row md:justify-between items-center p-4 space-y-4 md:space-y-0">
-  <app-button text="Créer un article"></app-button>
+  <app-button text="Créer un article" (click)="createArticle()"></app-button>
+
   <button
     (click)="onSort()"
     class="flex items-center space-x-2 bg-white text-black font-bold px-4 py-2 rounded-md"
   >
-    Trier par &#8595;
+    Trier par {{ isAscending ? '↑' : '↓' }}
   </button>
 </div>
 <div class="p-4">
