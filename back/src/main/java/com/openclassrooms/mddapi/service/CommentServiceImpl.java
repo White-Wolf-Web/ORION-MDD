@@ -9,6 +9,8 @@ import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.repository.CommentRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +58,24 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
     }
 
-    private User getCurrentUser() {
-        // Méthode pour obtenir l'utilisateur actuel
-        return new User(); // Remplacez par la logique réelle
+    @Override
+    public List<CommentDTO> getCommentsByArticleId(Long articleId) {
+        List<Comment> comments = commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
+        return comments.stream().map(comment -> new CommentDTO(
+                comment.getId(),
+                comment.getContent(),
+                comment.getAuthor().getUsername(),
+                comment.getCreatedAt()
+        )).collect(Collectors.toList());
     }
+
+
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserEmail = authentication.getName();
+
+        return userRepository.findByEmail(currentUserEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + currentUserEmail));
+    }
+
 }

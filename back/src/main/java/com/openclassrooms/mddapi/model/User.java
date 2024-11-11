@@ -46,7 +46,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id")
     )
-    @JsonIgnore // Ajoutez cette ligne
+    @JsonIgnore
     private Set<Topic> subscriptions = new HashSet<>();
 
 }

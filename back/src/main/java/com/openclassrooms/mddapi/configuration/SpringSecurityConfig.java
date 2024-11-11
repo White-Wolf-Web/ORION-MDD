@@ -46,6 +46,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/me/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/subscriptions/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/articles").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/articles/**").authenticated()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Autoriser Swagger UI et la documentation API
                         .anyRequest().authenticated()
                 );

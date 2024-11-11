@@ -21,17 +21,12 @@ public class CommentController {
 
     @Operation(summary = "Lister tous les commentaires d'un article")
     @GetMapping
-    public ResponseEntity<?> getAllComments(@PathVariable Long articleId) {
-        try {
-            return ResponseEntity.ok(commentService.getAllComments(articleId));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public ResponseEntity<?> getCommentsByArticleId(@PathVariable("articleId") Long articleId) {
+        return ResponseEntity.ok().body(commentService.getCommentsByArticleId(articleId));
     }
 
-    @Operation(summary = "Ajouter un commentaire à un article")
     @PostMapping
-    public ResponseEntity<?> addComment(@PathVariable Long articleId, @RequestBody CommentCreationDTO commentDTO) {
+    public ResponseEntity<?> addComment(@PathVariable("articleId") Long articleId, @RequestBody CommentCreationDTO commentDTO) {
         try {
             commentService.addComment(articleId, commentDTO);
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -39,4 +34,5 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 }
