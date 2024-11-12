@@ -1,11 +1,13 @@
-<div class="flex flex-col md:flex-row md:justify-between items-center p-4 space-y-4 md:space-y-0">
+<div
+  class="flex flex-col md:flex-row md:justify-between items-center p-4 space-y-4 md:space-y-0"
+>
   <app-button text="Créer un article" (click)="createArticle()"></app-button>
 
   <button
     (click)="onSort()"
     class="flex items-center space-x-2 bg-white text-black font-bold px-4 py-2 rounded-md"
   >
-    Trier par {{ isAscending ? '↑' : '↓' }}
+    Trier par {{ isAscending ? "↑" : "↓" }}
   </button>
 </div>
 <div class="p-4">
@@ -16,16 +18,9 @@
         [date]="article.createdAt || 'Date inconnue'"
         [author]="article.authorUsername"
         [content]="article.content | slice : 0 : 100"
+        [articleId]="article.id || 1"
       >
       </app-article-card>
-    </div>
-    <div class="p-4">
-      <app-article-card
-        title="Exemple de titre d'article"
-        date="2024-10-26"
-        author="Auteur Exemple"
-        content="Ceci est un aperçu de l'article, il se terminera par des points de suspension si le texte est trop long..."
-      ></app-article-card>
     </div>
   </div>
 </div>

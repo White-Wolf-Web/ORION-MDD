@@ -51,8 +51,14 @@ export class SubscriptionService {
     return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/topics`, { headers });
   }
 
-  unsubscribe(id: string): Observable<void> {
+
+  unsubscribeFromTopic(subscriptionId: number): Observable<any> {
     const headers = this.createAuthHeaders();
-    return this.http.delete<void>(`${this.apiUrl}/unsubscribe/${id}`, { headers });
-  }
+    return this.http.delete(`${this.apiUrl}/users/subscriptions/${subscriptionId}`, {
+        headers,
+        responseType: 'text' 
+    });
+}
+
+  
 }

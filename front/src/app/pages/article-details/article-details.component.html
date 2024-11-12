@@ -4,46 +4,42 @@
     <app-back-arrow></app-back-arrow>
     <h1 class="text-2xl font-bold">{{ article?.title }}</h1>
   </div>
-  
 
-  <!-- Date, Author, and Theme (adapt theme display as needed) -->
+  <!-- Date, Author, and Theme -->
   <div class="flex space-x-7 ml-[115px]">
     <span>{{ article?.createdAt }}</span>
     <span>{{ article?.authorUsername }}</span>
- <span>{{ article?.topic }}</span> 
+    <span>{{ article?.topic }}</span>
   </div>
 
   <!-- Content -->
-   <div class="ml-[115px] mt-5">
-  <p>{{ article?.content }}</p></div>
+  <div class="ml-[115px] mt-5">
+    <p>{{ article?.content }}</p>
+  </div>
 
   <!-- Separator -->
   <hr class="my-4">
 
   <!-- Comments Section -->
-   <div class="ml-[115px]">
-  <h2 class="text-xl font-semibold mb-2">Commentaires</h2>
-  <div *ngFor="let comment of article?.comments" class="mb-4 flex justify-center gap-4">
-    <!-- Nom d'utilisateur à gauche, extérieur au bloc de commentaire -->
-    <p class="font-semibold mb-1">{{ comment?.username }}</p>
+  <div class="ml-[115px]">
+    <h2 class="text-xl font-semibold mb-2">Commentaires</h2>
     
-    <!-- Bloc de commentaire -->
-    <div class="bg-gray-200 p-4 rounded-lg w-[449px] h-[100px]">
-      <p>{{ comment?.content }}</p>
-    </div>
-  </div>
-  
+    <!-- Comment List Component -->
+    <app-comment-list *ngIf="articleId" [articleId]="articleId"></app-comment-list>
 
-  <!-- Input for new comment -->
-  <div class="flex justify-center items-center mt-4 gap-4">
-    <input
-      type="text"
-      class="border border-black p-4 w-[570px] h-[120px] rounded-lg"
-      placeholder="Écrire un commentaire..."
-    />
-    <button class="ml-4">
-      <img src="/assets/🦆 icon _send_.png" alt="Envoyer" />
-    </button>
-  </div>
+
+    
+    <!-- Input for new comment -->
+    <div class="flex items-center mt-4 gap-4">
+      <input
+        [(ngModel)]="newComment"
+        type="text"
+        class="border border-black p-4 w-[570px] h-[120px] rounded-lg"
+        placeholder="Écrire un commentaire..."
+      />
+      <button (click)="submitComment()" class="ml-4">
+        <img src="/assets/🦆 icon _send_.png" alt="Envoyer" />
+      </button>
+    </div>
   </div>
 </div>

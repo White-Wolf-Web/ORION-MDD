@@ -30,7 +30,7 @@ import { UserService } from './services/user.service';
   declarations: [
     AppComponent,
     SubscriptionDetailsComponent,
-    CommentListComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -47,6 +47,7 @@ import { UserService } from './services/user.service';
     ArticleListComponent,
     ArticleDetailsComponent,
     ArticleCreateComponent,
+    CommentListComponent
   ],
 
   providers: [ArticleService, CommentService, SubscriptionService, UserService],

@@ -5,22 +5,23 @@ import { SubcriptionCardComponent } from 'src/app/components/subcription-card/su
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from 'src/app/components/button/button.component';
+import { UnsubscriptionCardComponent } from 'src/app/components/unsubscription-card/unsubscription-card.component';
 
 @Component({
   selector: 'app-me',
   standalone: true,
-  imports: [FormsModule, CommonModule, ButtonComponent, SubcriptionCardComponent],
+  imports: [FormsModule, CommonModule, ButtonComponent, SubcriptionCardComponent, UnsubscriptionCardComponent],
   templateUrl: './me.component.html',
   styleUrl: './me.component.scss'
 })
 export class MeComponent implements OnInit {
-  user: any = {}; // Initialize user object
+  user: any = {}; 
   subscriptions: SubscriptionDto[] = []; // Array to hold user subscriptions
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('token'); // Récupérer le token stocké
+    const token = localStorage.getItem('token'); 
     if (!token) {
       console.error('Aucun token JWT trouvé.');
       return;
@@ -61,6 +62,11 @@ export class MeComponent implements OnInit {
     });
   }
 
+// Gérer le désabonnement
+onUnsubscribed(subscriptionId: number) {
+  this.subscriptions = this.subscriptions.filter(sub => sub.id !== subscriptionId);
+}
+  
   // Déconnexion de l'utilisateur
   logout() {
     localStorage.removeItem('token'); // Supprime le token du stockage local

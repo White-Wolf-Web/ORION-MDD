@@ -1,11 +1,9 @@
-<div class="p-4 w-[360px] h-[180px] bg-gray-100 rounded-lg flex flex-col space-y-2">
-    <h2 class="text-lg font-bold font-inter leading-[19.36px]">{{ title }}</h2>
-    <p class="text-sm font-light font-inter leading-[16.94px] text-gray-500">
-      {{ date }} • {{ author }}
-    </p>
-    <p class="text-sm font-inter leading-[16.94px]">
-      {{ content }}...
-    </p>
-    
-  </div>
-  
+<div class="p-4 w-[360px] h-[180px] bg-gray-100 rounded-lg flex flex-col space-y-2 cursor-pointer" (click)="navigateToDetails()">
+  <h2 class="text-lg font-bold font-inter leading-[19.36px]">{{ title }}</h2>
+  <p class="text-sm font-light font-inter leading-[16.94px] text-gray-500">
+    {{ date }} • {{ author }}
+  </p>
+  <p class="text-sm font-inter leading-[16.94px]">
+    {{ content }}...
+  </p>
+</div>
