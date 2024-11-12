@@ -12,20 +12,21 @@
   <!-- Nav à droite, uniquement si ce n’est pas une page d'auth -->
   <nav *ngIf="!isAuthPage()" class="hidden md:flex items-center space-x-4">
     <a
-      routerLink="/articles"
-      routerLinkActive="text-red-700"
-      class="hover:underline"
-    >
-      Articles
-    </a>
+        routerLink="/articles"
+        routerLinkActive="text-customPurple-important"
+        class="block py-2 hover:bg-gray-200"
+      >
+        Articles
+      </a>
     <a
       routerLink="/topics"
-      routerLinkActive="text-red-700"
-      class="hover:underline"
+      routerLinkActive="text-customPurple-important"
+      class="block py-2 hover:bg-gray-200"
     >
       Thèmes
     </a>
-    <a routerLink="/me">
+    <a routerLink="/me"
+    routerLinkActive="border-customPurple-important">
       <img
         src="assets/user-icon.png"
         alt="User"
@@ -48,14 +49,14 @@
     <div class="flex flex-col items-end space-y-2">
       <a
         routerLink="/articles"
-        routerLinkActive="text-red-700"
+        routerLinkActive="text-customPurple"
         class="block py-2 hover:bg-gray-200"
       >
         Articles
       </a>
       <a
-        routerLink="/subscriptions"
-        routerLinkActive="text-red-700"
+        routerLink="/topics"
+        routerLinkActive="text-customPurple"
         class="block py-2 hover:bg-gray-200"
       >
         Thèmes

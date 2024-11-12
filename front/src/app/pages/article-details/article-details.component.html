@@ -1,11 +1,14 @@
-<div>
-  <!-- Back Arrow and Title -->
-  <div class="flex items-center space-x-2">
-    <app-back-arrow></app-back-arrow>
-    <h1 class="text-2xl font-bold">{{ article?.title }}</h1>
-  </div>
+<main class="relative">
+  <app-back-arrow></app-back-arrow>
+  <div class="flex flex-col items-center justify-center p-8 bg-white mx-auto">
+    <div class="m-9 md:hidden"></div>
+    <h2 class="text-2xl font-bold mb-4">{{ article?.title }}</h2>
+</div>
 
-  <!-- Date, Author, and Theme -->
+
+
+
+  <!-- Date, auteur et thême -->
   <div class="flex space-x-7 ml-[115px]">
     <span>{{ article?.createdAt }}</span>
     <span>{{ article?.authorUsername }}</span>
@@ -17,20 +20,20 @@
     <p>{{ article?.content }}</p>
   </div>
 
-  <!-- Separator -->
+  <!-- Separateur -->
   <hr class="my-4">
 
-  <!-- Comments Section -->
+  <!-- Sections des commentaires -->
   <div class="ml-[115px]">
     <h2 class="text-xl font-semibold mb-2">Commentaires</h2>
     
-    <!-- Comment List Component -->
+    <!-- Liste des commentaires -->
     <app-comment-list *ngIf="articleId" [articleId]="articleId"></app-comment-list>
 
 
     
-    <!-- Input for new comment -->
-    <div class="flex items-center mt-4 gap-4">
+    <!-- Commentaires à écrire -->
+    <div class="flex justify-center items-center mt-4 gap-4">
       <input
         [(ngModel)]="newComment"
         type="text"
@@ -42,4 +45,4 @@
       </button>
     </div>
   </div>
-</div>
+</main>

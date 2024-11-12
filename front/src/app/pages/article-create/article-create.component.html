@@ -1,48 +1,51 @@
 <main class="relative">
-<app-back-arrow></app-back-arrow>
-<div class="flex flex-col items-center justify-center p-8  bg-white mx-auto">
-  <div class="m-9 md:hidden" ></div>
-    <h2 class="text-2xl font-bold mb-4 ">Créer un nouvel article</h2>
+  <app-back-arrow></app-back-arrow>
+  <div class="flex flex-col items-center justify-center p-8 bg-white mx-auto">
+    <div class="m-9 md:hidden"></div>
+    <h2 class="text-2xl font-bold mb-4">Créer un nouvel article</h2>
 
-    <form class="flex flex-col items-center justify-center gap-3 mx-auto" (ngSubmit)="onSubmit()">
-      <!-- Champ pour sélectionner un thême -->
-      <label for="topicId">Thème</label>
-      <select
-        id="topicId"
-        [(ngModel)]="article.topicId"
-        name="topicId"
-        class="border-2 border-customPurple w-[180px] text-left h-auto rounded py-1 px-2"
-        required
-      >
-        <option value="" disabled>Sélectionner un thême</option>
-        <!-- Remplacez ces options par des thèmes réels si disponibles -->
-        <option *ngFor="let topic of topics" [value]="topic.id">{{ topic.name }}</option>
-      </select>
-    
-      <!-- Champ pour le titre de l'article -->
-      <label for="title">Titre de l'article</label>
+    <form
+      class="flex flex-col items-center justify-center gap-3 mx-auto"
+      (ngSubmit)="onSubmit()">
+      <!-- Pour sélectionner un thême -->
+     <label for="topicId" class="sr-only">Thème de l'article</label>
+<select
+  id="topicId"
+  [(ngModel)]="article.topicId"
+  name="topicId"
+  class="border-2 border-customPurple w-[280px] text-left h-auto rounded py-1 px-2"
+  required>
+  <option value="" disabled>Sélectionner un thême</option>
+  <option *ngFor="let topic of topics" [value]="topic.id">
+    {{ topic.name }}
+  </option>
+</select>
+
+      
+
+      <!-- Titre de l'article -->
+      <label for="title"></label>
       <input
         id="title"
         type="text"
         [(ngModel)]="article.title"
         name="title"
-        class="border-2 border-customPurple w-[180px] text-left h-auto rounded py-1 px-2"
+        class="border-2 border-customPurple w-[280px] text-left h-auto rounded py-1 px-2"
         placeholder="Titre de l'article"
-        required
-      />
-  
-      <!-- Champ pour le contenu de l'article -->
-      <label for="content">Contenu de l'article</label>
+        required/>
+
+      <!-- Contenu de l'article -->
+      <label for="content"></label>
       <textarea
         id="content"
         [(ngModel)]="article.content"
         name="content"
-        class="border-2 border-customPurple w-[180px] text-left h-auto min-h-24 rounded py-1 px-2"
+        class="border-2 border-customPurple w-[280px] text-left h-auto min-h-[150px] rounded py-1 px-2"
         placeholder="Contenu de l'article"
-        required
-      ></textarea>
-  
+        required>
+      </textarea>
+
       <app-button class="mt-9" text="Créer"></app-button>
-  </form>
+    </form>
   </div>
 </main>

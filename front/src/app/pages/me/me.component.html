@@ -19,23 +19,24 @@
   
     <!-- Subscriptions Section -->
     <h2 class="text-2xl text-center font-bold mb-4">Abonnements</h2>
-    <div *ngIf="subscriptions && subscriptions.length; else noSubscriptions">
-      <div *ngFor="let subscription of subscriptions" class="mb-4">
+    <div
+      *ngIf="subscriptions && subscriptions.length; else noSubscriptions"
+      class="flex flex-wrap justify-center md:justify-around gap-4"
+    >
+      <div *ngFor="let subscription of subscriptions" class="flex-shrink-0 mb-4">
         <app-unsubscription-card
           [title]="subscription.name || 'Sans titre'"
           [content]="(subscription.description || 'Contenu indisponible') | slice:0:100"
           [subscriptionId]="subscription.id"
-          (unsubscribed)="onUnsubscribed($event)">
+          (unsubscribed)="onUnsubscribed($event)"
+        >
         </app-unsubscription-card>
       </div>
-      
     </div>
+    
     <ng-template #noSubscriptions>
-      <p>Vous n'avez pas encore d'abonnements.</p>
+      <p class="text-center md:text-left">Vous n'avez pas encore d'abonnements.</p>
     </ng-template>
     
-    
-    
-  </div>
   
   

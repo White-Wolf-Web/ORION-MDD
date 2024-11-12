@@ -1,8 +1,10 @@
 <div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">Comments</h2>
-    <div *ngFor="let comment of comments" class="p-4 border-b">
+   
+    <div *ngFor="let comment of comments" class="p-4 border-b m-2 flex">
+      <small>{{ comment.authorUsername }}</small>
+      <div class="bg-slate-200 rounded p-5 ml-4 min-w-full md:min-w-[500px]">
       <p>{{ comment.content }}</p>
-      <small>By: {{ comment.authorUsername }}</small>
+    </div>
     </div>
   </div>
   

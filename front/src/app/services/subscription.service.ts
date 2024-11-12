@@ -48,7 +48,7 @@ export class SubscriptionService {
 
   getUserSubscriptions(): Observable<SubscriptionDto[]> {
     const headers = this.createAuthHeaders();
-    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/topics`, { headers });
+    return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/users/me/subscriptions`, { headers });
   }
 
 

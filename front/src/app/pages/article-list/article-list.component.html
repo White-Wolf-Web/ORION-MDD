@@ -1,6 +1,4 @@
-<div
-  class="flex flex-col md:flex-row md:justify-between items-center p-4 space-y-4 md:space-y-0"
->
+<div class="flex flex-col md:flex-row md:justify-between items-center p-4 space-y-4 md:space-y-0">
   <app-button text="Créer un article" (click)="createArticle()"></app-button>
 
   <button
@@ -10,17 +8,23 @@
     Trier par {{ isAscending ? "↑" : "↓" }}
   </button>
 </div>
-<div class="p-4">
-  <div class="justify-start">
-    <div *ngFor="let article of articles" class="mb-4">
-      <app-article-card
-        [title]="article.title"
-        [date]="article.createdAt || 'Date inconnue'"
-        [author]="article.authorUsername"
-        [content]="article.content | slice : 0 : 100"
-        [articleId]="article.id || 1"
-      >
-      </app-article-card>
+
+<!-- Section de cartes centrée -->
+<div class="flex justify-center w-full">
+  <div class="p-4 m-auto max-w-3xl w-full">
+    <div class="flex flex-wrap justify-center md:justify-start gap-4">
+      <div *ngFor="let article of articles" class="flex-shrink-0">
+        <app-article-card
+          [title]="article.title"
+          [date]="article.createdAt || 'Date inconnue'"
+          [author]="article.authorUsername"
+          [content]="article.content | slice : 0 : 100"
+          [articleId]="article.id || 1"
+        >
+        </app-article-card>
+      </div>
     </div>
   </div>
 </div>
+
+

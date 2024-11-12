@@ -26,17 +26,15 @@ export class HeaderComponent {
     this.isMenuOpen = !this.isMenuOpen;
 
     if (this.isMenuOpen) {
-      // Réinitialise le timeout précédent
       clearTimeout(this.autoCloseTimeout);
 
-      // Ferme le menu après 5 secondes
       this.autoCloseTimeout = setTimeout(() => {
         this.isMenuOpen = false;
       }, 5000);
     }
   }
 
-  // Gestion de la redimensionnement de la fenêtre pour afficher le menu correctement
+  // Gestion de la redimensionnement de la fenêtre
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isSmallScreen = event.target.innerWidth < 768;
