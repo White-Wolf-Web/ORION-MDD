@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,17 +58,20 @@ public class UsersController {
         try {
             boolean emailChanged = userService.updateUserProfile(profileDTO);
 
-            if (emailChanged) {
-                return ResponseEntity.ok("Profil mis à jour avec succès. Veuillez vous reconnecter.");
-            }
+            Map<String, String> response = new HashMap<>();
+            response.put("message", emailChanged ?
+                    "Profil mis à jour avec succès. Veuillez vous reconnecter." :
+                    "Profil mis à jour avec succès");
 
-            return ResponseEntity.ok("Profil mis à jour avec succès");
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour du profil");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Erreur lors de la mise à jour du profil"));
         }
     }
+
+
 
 
 

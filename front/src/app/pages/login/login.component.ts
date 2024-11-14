@@ -16,13 +16,13 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   isSmallScreen = window.innerWidth < 768;
-  email: string = '';
+  identifier: string = ''; // Nouveau champ pour l'email ou le nom d'utilisateur
   password: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   onSubmit() {
-    const loginData = { email: this.email, password: this.password };
+    const loginData = { identifier: this.identifier, password: this.password };
     this.http.post('/api/auth/login', loginData).subscribe(
       (response: any) => {
         console.log('Login successful:', response);
@@ -31,7 +31,7 @@ export class LoginComponent {
       },
       (error) => {
         console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials and try again.');
+        alert('Échec de la connexion. Veuillez vérifier vos informations d’identification.');
       }
     );
   }

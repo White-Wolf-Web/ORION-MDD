@@ -45,10 +45,10 @@ public class SpringSecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/articles/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/users/me/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "api/topics").authenticated()
                 .anyRequest().authenticated()
         );

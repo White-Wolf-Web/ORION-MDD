@@ -8,11 +8,13 @@ import { ArticleDto } from '../../models/article.model';
 import { BackArrowComponent } from '../../components/back-arrow/back-arrow.component';
 import { CommentListComponent } from '../../components/comment-list/comment-list.component'; 
 import { CommentDto } from 'src/app/models/comment.model';
+import { Router } from '@angular/router';
+import { ShortDatePipe } from 'src/app/pipes/short-date.pipe';
 
 @Component({
   selector: 'app-article-details',
   standalone: true,
-  imports: [BackArrowComponent, CommonModule, FormsModule,  CommentListComponent], 
+  imports: [BackArrowComponent, CommonModule, FormsModule,  CommentListComponent, ShortDatePipe], 
   templateUrl: './article-details.component.html',
 })
 export class ArticleDetailsComponent implements OnInit {
@@ -24,10 +26,17 @@ export class ArticleDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Token non disponible. Veuillez vous connecter.');
+      this.router.navigate(['/login']);
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.articleService.getArticleById(id).subscribe((data: ArticleDto) => {

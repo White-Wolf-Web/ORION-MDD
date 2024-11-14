@@ -22,4 +22,13 @@ public class UserProfileDTO {
 
     private List<TopicDTO> subscriptions;
 
+    private String password;
+
+    // Constructeur supplémentaire sans le champ `password`
+    public UserProfileDTO(String username, String email, List<TopicDTO> subscriptions) {
+        this.username = username;
+        this.email = email;
+        this.subscriptions = subscriptions;
+    }
+
 }

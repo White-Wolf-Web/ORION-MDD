@@ -43,14 +43,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String loginUser(UserLoginDTO loginDTO) {
-        User user = userRepository.findByEmail(loginDTO.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+        User user = userRepository.findByEmail(loginDTO.getIdentifier())
+                .orElseGet(() -> userRepository.findByUsername(loginDTO.getIdentifier())
+                        .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé")));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Mot de passe incorrect");
         }
 
-        // Générer un token JWT avec l'email
-        return jwtTokenUtil.generateToken(user.getEmail());
+        // Générer un token JWT avec l'email et le nom d'utilisateur
+        return jwtTokenUtil.generateToken(user.getEmail(), user.getUsername());
     }
+
 }

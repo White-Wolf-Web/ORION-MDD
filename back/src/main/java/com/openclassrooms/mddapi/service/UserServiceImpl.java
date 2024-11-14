@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Injection de PasswordEncoder
 
     @Override
     @Transactional(readOnly = true)
@@ -63,16 +67,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     @Transactional
     public boolean updateUserProfile(UserProfileDTO profileDTO) {
         User user = getCurrentUser();
         boolean emailChanged = false;
 
-        // Vérifiez si l'email doit être mis à jour
+        // Vérifier si le nom d'utilisateur doit être mis à jour
+        if (!user.getUsername().equals(profileDTO.getUsername())) {
+            if (userRepository.existsByUsername(profileDTO.getUsername())) {
+                throw new IllegalArgumentException("Ce nom d'utilisateur est déjà pris par un autre utilisateur.");
+            }
+            user.setUsername(profileDTO.getUsername());
+        }
+
+        // Vérifier si l'email doit être mis à jour
         if (!user.getEmail().equals(profileDTO.getEmail())) {
-            // Si l'email est déjà utilisé par un autre utilisateur
             if (userRepository.existsByEmail(profileDTO.getEmail())) {
                 throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur.");
             }
@@ -80,14 +90,16 @@ public class UserServiceImpl implements UserService {
             emailChanged = true;
         }
 
-        // Mettre à jour d'autres champs de l'utilisateur
-        userMapper.toEntity(profileDTO, user);
+        // Vérifier si le mot de passe doit être mis à jour
+        if (profileDTO.getPassword() != null && !profileDTO.getPassword().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(profileDTO.getPassword());
+            user.setPassword(encodedPassword);
+        }
+
         userRepository.save(user);
 
         return emailChanged;
     }
-
-
 
     @Override
     public void subscribeToTopic(Long topicId) {
@@ -100,7 +112,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(currentUser); // Assure la persistance de l'abonnement
         }
     }
-
 
     @Override
     @Transactional
@@ -116,10 +127,6 @@ public class UserServiceImpl implements UserService {
         logger.info("Abonnement au thème {} supprimé pour l'utilisateur {}", topicId, currentUser.getEmail());
     }
 
-
-
-
-
     @Override
     @Transactional(readOnly = true)
     public TopicDTO getUserSubscriptionById(Long topicId) {
@@ -131,7 +138,6 @@ public class UserServiceImpl implements UserService {
 
         return new TopicDTO(topic.getId(), topic.getName(), topic.getDescription());
     }
-
 
     @Override
     public User findByEmail(String email) {
@@ -147,7 +153,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + currentUserEmail));
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<Topic> getUserSubscriptions() {
@@ -160,9 +165,4 @@ public class UserServiceImpl implements UserService {
         Long userId = getCurrentUser().getId();
         return userRepository.isUserSubscribedToTopic(userId, topicId);
     }
-
-
-
-
-
 }

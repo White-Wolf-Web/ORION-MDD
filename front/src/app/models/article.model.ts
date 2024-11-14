@@ -6,6 +6,10 @@ export interface ArticleDto {
     createdAt?: string;
     updatedAt?: string;
     comments?: Array<{ username: string; content: string }>; 
-    topic?:string;
+    topicName?: string;
+    topic?: {
+      id: number;
+      name: string;
+    };
   }
   

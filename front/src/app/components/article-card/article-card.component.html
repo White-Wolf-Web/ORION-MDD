@@ -1,5 +1,5 @@
 <div class="p-4 w-[360px] h-[200px] bg-gray-100 rounded-lg shadow-lg flex flex-col justify-between space-y-2" (click)="navigateToDetails()">
   <h2 class="text-lg font-bold">{{ title }}</h2>
-  <p class="text-sm text-gray-500">{{ date }} • {{ author }}</p>
+  <p class="text-sm text-gray-500">{{ date | shortDate }} • {{ author }}</p>
   <p class="text-sm">{{ content }}...</p>
 </div>

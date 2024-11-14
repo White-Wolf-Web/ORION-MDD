@@ -5,6 +5,7 @@ import { SubscriptionDto } from '../../models/subscription.model';
 import { SubcriptionCardComponent } from '../../components/subcription-card/subcription-card.component';
 import { HttpHeaders } from '@angular/common/http';
 import { ButtonComponent } from '../../components/button/button.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subscription-list',
@@ -15,7 +16,7 @@ import { ButtonComponent } from '../../components/button/button.component';
 export class SubscriptionListComponent implements OnInit {
   subscriptions: SubscriptionDto[] = [];
 
-  constructor(private subscriptionService: SubscriptionService) {}
+  constructor(private subscriptionService: SubscriptionService,  private router: Router) {}
 
   ngOnInit() {
     this.getSubscriptions();
@@ -43,6 +44,7 @@ export class SubscriptionListComponent implements OnInit {
       );
     } else {
       alert('Token non disponible. Veuillez vous connecter.');
+      this.router.navigate(['/login']);
     }
   }
 }

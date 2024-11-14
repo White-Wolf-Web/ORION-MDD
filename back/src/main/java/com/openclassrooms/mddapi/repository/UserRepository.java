@@ -31,6 +31,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean isUserSubscribedToTopic(@Param("userId") Long userId, @Param("topicId") Long topicId);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByUsername(String username);
 }
 
 

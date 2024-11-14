@@ -31,6 +31,13 @@ export class ArticleCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Token non disponible. Veuillez vous connecter.');
+      this.router.navigate(['/login']);
+    }
+    
     this.subscriptionService.getUserSubscriptions().subscribe((data: { id: number; name: string }[]) => {
       this.topics = data;
     });

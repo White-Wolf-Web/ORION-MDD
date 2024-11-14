@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { ShortDatePipe } from 'src/app/pipes/short-date.pipe';
 
 @Component({
   selector: 'app-article-card',
   standalone: true,
-  imports: [],
+  imports: [ShortDatePipe],
   templateUrl: './article-card.component.html',
   styleUrls: ['./article-card.component.scss']
 })
@@ -14,6 +15,7 @@ export class ArticleCardComponent {
   @Input() author!: string;
   @Input() content!: string;
   @Input() articleId?: number;
+  @Input() topicName!: string; 
 
   constructor(private router: Router) {}
 

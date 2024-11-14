@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserLoginDTO {
 
-    @NotBlank(message = "L'email est obligatoire")
-    @Email(message = "Format de l'email invalide")
-    private String email;
+    @NotBlank(message = "L'identifiant est obligatoire")
+    private String identifier;  // Peut être l'email ou le nom d'utilisateur
 
     @NotBlank(message = "Le mot de passe est obligatoire")
     private String password;
+
+
 }

@@ -26,10 +26,11 @@ import { CommentService } from './services/comment.service';
 import { SubscriptionService } from './services/subscription.service';
 import { UserService } from './services/user.service';
 
+import { ShortDatePipe } from './pipes/short-date.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    SubscriptionDetailsComponent,
+    SubscriptionDetailsComponent
 
   ],
   imports: [
@@ -47,7 +48,8 @@ import { UserService } from './services/user.service';
     ArticleListComponent,
     ArticleDetailsComponent,
     ArticleCreateComponent,
-    CommentListComponent
+    CommentListComponent,
+    ShortDatePipe
   ],
 
   providers: [ArticleService, CommentService, SubscriptionService, UserService],

@@ -10,7 +10,7 @@
 
   <!-- Date, auteur et thême -->
   <div class="flex space-x-7 ml-[115px]">
-    <span>{{ article?.createdAt }}</span>
+    <span>{{ article?.createdAt | date: 'dd/MM/yyyy' }}</span>
     <span>{{ article?.authorUsername }}</span>
     <span>{{ article?.topic }}</span>
   </div>

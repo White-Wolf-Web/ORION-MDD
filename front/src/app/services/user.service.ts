@@ -19,18 +19,16 @@ export class UserService {
     return this.http.get<UserDto>(`${this.apiUrl}/${id}`);
   }
 
-  updateUser(id: string, user: UserDto): Observable<UserDto> {
-    return this.http.put<UserDto>(`${this.apiUrl}/${id}`, user);
-  }
-
-  deleteUser(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-/*
-  // Vérifier si l'utilisateur est abonné à un thème
-  isUserSubscribedToTheme(themeId: number): Observable<boolean> {
+  updateUserProfile(user: { username: string; email: string }): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<boolean>(`${this.apiUrl}/me/subscriptions/${themeId}/is-subscribed`, { headers });
-  }*/
+    
+    return this.http.put(this.apiUrl, user, { headers });
+  }
+  getUserSubscriptions(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>('http://localhost:8080/api/users/me/subscriptions', { headers });
+  }
+  
 }
