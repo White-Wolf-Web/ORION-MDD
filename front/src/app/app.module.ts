@@ -6,16 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
-import { ArticleListComponent } from './pages/article-list/article-list.component';
-import { ArticleCreateComponent } from './pages/article-create/article-create.component';
-import { ArticleDetailsComponent } from './pages/article-details/article-details.component';
-import { SubscriptionListComponent } from './pages/subscription-list/subscription-list.component';
+import { ArticleListComponent } from './pages/articles/article-list/article-list.component';
+import { ArticleCreateComponent } from './pages/articles/article-create/article-create.component';
+import { ArticleDetailsComponent } from './pages/articles/article-details/article-details.component';
+import { SubscriptionListComponent } from './pages/topics/subscription-list/subscription-list.component';
 import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 
 import { HomeComponent } from './pages/home/home.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { LoginComponent } from './pages/auth/login/login.component';
 import { MeComponent } from './pages/me/me.component';
 
 import { HeaderComponent } from './components/header/header.component';
@@ -28,11 +28,7 @@ import { UserService } from './services/user.service';
 
 import { ShortDatePipe } from './pipes/short-date.pipe';
 @NgModule({
-  declarations: [
-    AppComponent,
-    SubscriptionDetailsComponent
-
-  ],
+  declarations: [AppComponent, SubscriptionDetailsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -49,7 +45,7 @@ import { ShortDatePipe } from './pipes/short-date.pipe';
     ArticleDetailsComponent,
     ArticleCreateComponent,
     CommentListComponent,
-    ShortDatePipe
+    ShortDatePipe,
   ],
 
   providers: [ArticleService, CommentService, SubscriptionService, UserService],

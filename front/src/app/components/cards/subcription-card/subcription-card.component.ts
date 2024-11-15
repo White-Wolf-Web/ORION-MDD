@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { ButtonComponent } from '../button/button.component';
-import { SubscriptionService } from '../../services/subscription.service';
+import { ButtonComponent } from '../../button/button.component';
+import { SubscriptionService } from '../../../services/subscription.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -8,13 +8,12 @@ import { HttpErrorResponse } from '@angular/common/http';
   standalone: true,
   imports: [ButtonComponent],
   templateUrl: './subcription-card.component.html',
-  styleUrls: ['./subcription-card.component.scss']
+  styleUrls: ['./subcription-card.component.scss'],
 })
 export class SubcriptionCardComponent {
   @Input() title!: string;
   @Input() content!: string;
   @Input() subscriptionId!: number;
-  
 
   constructor(private subscriptionService: SubscriptionService) {}
 
@@ -33,7 +32,4 @@ export class SubcriptionCardComponent {
       }
     );
   }
-  
-  
 }
-

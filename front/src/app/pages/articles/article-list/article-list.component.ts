@@ -1,10 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ArticleService } from '../../services/article.service';
-import { UserService } from '../../services/user.service'; 
-import { ArticleDto } from '../../models/article.model';
-import { ArticleCardComponent } from '../../components/article-card/article-card.component';
-import { ButtonComponent } from '../../components/button/button.component';
+import { ArticleService } from 'src/app/services/article.service';
+import { UserService } from 'src/app/services/user.service'; 
+import { ArticleDto } from 'src/app/models/article.model'; 
+import { ArticleCardComponent } from 'src/app/components/cards/article-card/article-card.component'; 
+import { ButtonComponent } from 'src/app/components/button/button.component'; 
 import { Router } from '@angular/router';
 
 @Component({

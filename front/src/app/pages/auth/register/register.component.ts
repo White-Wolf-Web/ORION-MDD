@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BackArrowComponent } from '../../components/back-arrow/back-arrow.component';
+import { BackArrowComponent } from 'src/app/components/back-arrow/back-arrow.component'; 
 import { ButtonComponent } from 'src/app/components/button/button.component';
 import { LogoComponent } from 'src/app/components/logo/logo.component';
 import { HttpClient } from '@angular/common/http';

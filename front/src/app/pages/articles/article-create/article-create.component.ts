@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ArticleService } from '../../services/article.service';
+import { ArticleService } from 'src/app/services/article.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from '../../components/button/button.component';
-import { BackArrowComponent } from '../../components/back-arrow/back-arrow.component';
+import { ButtonComponent } from 'src/app/components/button/button.component'; 
+import { BackArrowComponent } from 'src/app/components/back-arrow/back-arrow.component';
 import { SubscriptionService } from 'src/app/services/subscription.service'; 
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SubscriptionService } from '../../services/subscription.service';
-import { ButtonComponent } from '../button/button.component';
+import { SubscriptionService } from 'src/app/services/subscription.service';
+import { ButtonComponent } from '../../button/button.component';
 
 
 @Component({
