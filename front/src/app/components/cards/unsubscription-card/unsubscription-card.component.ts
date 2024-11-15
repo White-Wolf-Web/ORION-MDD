@@ -2,13 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ButtonComponent } from '../../button/button.component';
 
-
 @Component({
   selector: 'app-unsubscription-card',
   standalone: true,
   imports: [ButtonComponent],
   templateUrl: './unsubscription-card.component.html',
-  styleUrls: ['./unsubscription-card.component.scss']
+  styleUrls: ['./unsubscription-card.component.scss'],
 })
 export class UnsubscriptionCardComponent {
   @Input() title!: string;
@@ -19,15 +18,16 @@ export class UnsubscriptionCardComponent {
   constructor(private subscriptionService: SubscriptionService) {}
 
   onUnsubscribe() {
-    this.subscriptionService.unsubscribeFromTopic(this.subscriptionId).subscribe(
-      (response) => {
-        console.log(response); // Devrait afficher "Abonnement supprimé avec succès."
-        this.unsubscribed.emit(this.subscriptionId); // Émet l'ID pour mettre à jour le composant parent
-      },
-      (error) => {
-        console.error('Échec du désabonnement:', error);
-      }
-    );
-}
-
+    this.subscriptionService
+      .unsubscribeFromTopic(this.subscriptionId)
+      .subscribe(
+        (response) => {
+          console.log(response); 
+          this.unsubscribed.emit(this.subscriptionId); // Émet l'ID pour mettre à jour le composant parent
+        },
+        (error) => {
+          console.error('Échec du désabonnement:', error);
+        }
+      );
+  }
 }

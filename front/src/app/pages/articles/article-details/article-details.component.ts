@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms'; 
@@ -10,6 +10,7 @@ import { CommentListComponent } from 'src/app/components/comment-list/comment-li
 import { CommentDto } from 'src/app/models/comment.model';
 import { Router } from '@angular/router';
 import { ShortDatePipe } from 'src/app/pipes/short-date.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-article-details',
@@ -17,11 +18,12 @@ import { ShortDatePipe } from 'src/app/pipes/short-date.pipe';
   imports: [BackArrowComponent, CommonModule, FormsModule,  CommentListComponent, ShortDatePipe], 
   templateUrl: './article-details.component.html',
 })
-export class ArticleDetailsComponent implements OnInit {
+export class ArticleDetailsComponent implements OnInit, OnDestroy {
   article: ArticleDto | undefined;
   articleId!: number; 
   comments: CommentDto[] = [];
   newComment: string = '';
+  private subscriptionsList = new Subscription(); 
 
   constructor(
     private route: ActivatedRoute,
@@ -70,5 +72,10 @@ export class ArticleDetailsComponent implements OnInit {
         error: (error) => console.error("Erreur lors de l'ajout du commentaire:", error),
       });
     }
+  }
+  // Nettoyer les abonnements lors de la destruction du composant
+  ngOnDestroy() {
+    this.subscriptionsList.unsubscribe(); // Annuler tous les abonnements
+    console.log('Tous les abonnements dans ArticleDetailsComponent ont été annulés.');
   }
 }

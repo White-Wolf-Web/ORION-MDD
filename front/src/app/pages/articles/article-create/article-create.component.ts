@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArticleService } from 'src/app/services/article.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ButtonComponent } from 'src/app/components/button/button.component'; 
 import { BackArrowComponent } from 'src/app/components/back-arrow/back-arrow.component';
 import { SubscriptionService } from 'src/app/services/subscription.service'; 
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-article-create',
@@ -14,7 +15,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
   templateUrl: './article-create.component.html',
   styleUrls: ['./article-create.component.scss'],
 })
-export class ArticleCreateComponent implements OnInit {
+export class ArticleCreateComponent implements OnInit, OnDestroy {
   isSmallScreen = window.innerWidth < 768;
   article = {
     title: '',
@@ -23,6 +24,7 @@ export class ArticleCreateComponent implements OnInit {
     authorUsername: localStorage.getItem('username') || '', 
   };
   topics: { id: number; name: string }[] = [];
+  private subscriptionsList = new Subscription(); // Gestion des abonnements
 
   constructor(
     private articleService: ArticleService,
@@ -53,5 +55,9 @@ export class ArticleCreateComponent implements OnInit {
         console.error('Erreur lors de la création de l’article :', error);
       }
     );
+  }
+  ngOnDestroy() {
+    this.subscriptionsList.unsubscribe(); // Annuler tous les abonnements
+    console.log('Tous les abonnements dans ArticleCreateComponent ont été annulés.');
   }
 }

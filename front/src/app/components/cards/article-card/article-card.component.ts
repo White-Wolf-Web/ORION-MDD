@@ -7,7 +7,7 @@ import { ShortDatePipe } from 'src/app/pipes/short-date.pipe';
   standalone: true,
   imports: [ShortDatePipe],
   templateUrl: './article-card.component.html',
-  styleUrls: ['./article-card.component.scss']
+  styleUrls: ['./article-card.component.scss'],
 })
 export class ArticleCardComponent {
   @Input() title!: string;
@@ -15,17 +15,23 @@ export class ArticleCardComponent {
   @Input() author!: string;
   @Input() content!: string;
   @Input() articleId?: number;
-  @Input() topicName!: string; 
+  @Input() topicName!: string;
 
+
+  // Constructeur pour injecter les services nécessaires au composant.
   constructor(private router: Router) {}
 
   navigateToDetails() {
     if (this.articleId) {
-      console.log('Navigating to article with ID:', this.articleId);
       this.router.navigate([`/articles/${this.articleId}`]);
     } else {
       console.error('Article ID is undefined');
     }
   }
-  
 }
+
+  /**
+   * Propriétés d'entrée (Input) pour recevoir des données d'un composant parent.
+   * @Input `title`: Représente le titre de l'article.
+   * Exemple : `<app-article-card [title]="'Mon article'"></app-article-card>`
+   */

@@ -5,14 +5,14 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],  
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
   isMenuOpen = false;
   isSmallScreen = window.innerWidth < 768;
-  autoCloseTimeout: any;
+  autoCloseTimeout!: ReturnType<typeof setTimeout>;
 
   constructor(public router: Router) {}
 
@@ -22,7 +22,7 @@ export class HeaderComponent {
   }
 
   // Méthode pour basculer le menu hamburger
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
 
     if (this.isMenuOpen) {

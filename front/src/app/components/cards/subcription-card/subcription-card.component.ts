@@ -17,12 +17,16 @@ export class SubcriptionCardComponent {
 
   constructor(private subscriptionService: SubscriptionService) {}
 
+  /**
+   * Méthode est déclenchée lorsque l'utilisateur clique sur le bouton "S'abonner".
+   * Elle utilise le service pour envoyer une requête d'abonnement au backend.
+   */
   onSubscribe() {
     this.subscriptionService.subscribeToTopic(this.subscriptionId).subscribe(
       () => {
         console.log('Abonnement réussi');
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         console.log('Erreur capturée:', error);
         if (error.status === 400) {
           alert('Désolé, vous êtes déjà abonné à ce thème !');
