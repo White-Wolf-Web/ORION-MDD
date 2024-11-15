@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { ArticleListComponent } from './pages/articles/article-list/article-list.component';
@@ -27,6 +27,10 @@ import { SubscriptionService } from './services/subscription.service';
 import { UserService } from './services/user.service';
 
 import { ShortDatePipe } from './pipes/short-date.pipe';
+
+import { AuthInterceptor } from './core/auth.interceptor';
+import { AuthGuard } from './core/auth.guard';
+
 @NgModule({
   declarations: [AppComponent, SubscriptionDetailsComponent],
   imports: [
@@ -48,7 +52,11 @@ import { ShortDatePipe } from './pipes/short-date.pipe';
     ShortDatePipe,
   ],
 
-  providers: [ArticleService, CommentService, SubscriptionService, UserService],
+  providers: [ArticleService, CommentService, SubscriptionService, UserService, AuthGuard, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
