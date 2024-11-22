@@ -40,16 +40,26 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
     }
 
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.articleService.getArticleById(id).subscribe((data: ArticleDto) => {
+if (id) {
+  this.articleService.getArticleById(id).subscribe({
+    next: (data: ArticleDto) => {
+      if (data && data.id !== undefined) {
         this.article = data;
-        if (this.article.id !== undefined) {
-          this.articleId = this.article.id; // Assigner l'ID à la propriété `articleId`
-        }
-      });
-    } else {
-      console.error('Article ID is null');
-    }
+        this.articleId = data.id;
+      } else {
+        console.error('Article introuvable ou sans ID valide.');
+        this.router.navigate(['/404']); // Redirection si l'article est absent ou invalide
+      }
+    },
+    error: (error) => {
+      console.error('Erreur lors de la récupération de l\'article :', error);
+      this.router.navigate(['/404']); // Redirection en cas d'erreur API
+    },
+  });
+} else {
+  console.error('ID d\'article manquant dans la route.');
+  this.router.navigate(['/404']); // Redirection si aucun ID dans la route
+}
   }
 
   loadComments(articleId: string) {

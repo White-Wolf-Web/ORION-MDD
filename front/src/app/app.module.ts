@@ -13,7 +13,7 @@ import { SubscriptionListComponent } from './pages/topics/subscription-list/subs
 import { SubscriptionDetailsComponent } from './components/subscription-details/subscription-details.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 
-import { HomeComponent } from './pages/home/home.component';
+import { HomeComponent } from './pages/auth/home/home.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { MeComponent } from './pages/me/me.component';
@@ -52,11 +52,18 @@ import { AuthGuard } from './core/auth.guard';
     ShortDatePipe,
   ],
 
-  providers: [ArticleService, CommentService, SubscriptionService, UserService, AuthGuard, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true,
-  },],
+  providers: [
+    ArticleService,
+    CommentService,
+    SubscriptionService,
+    UserService,
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

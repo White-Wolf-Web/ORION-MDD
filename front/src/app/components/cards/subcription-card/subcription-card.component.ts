@@ -25,6 +25,7 @@ export class SubcriptionCardComponent {
     this.subscriptionService.subscribeToTopic(this.subscriptionId).subscribe(
       () => {
         console.log('Abonnement réussi');
+        alert('Abonnement réussi')
       },
       (error: HttpErrorResponse) => {
         console.log('Erreur capturée:', error);

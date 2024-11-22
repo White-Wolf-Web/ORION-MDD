@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SubscriptionDto } from '../../models/subscription.model';
+import { UserDto } from 'src/app/models/user.model';
 import { SubcriptionCardComponent } from 'src/app/components/cards/subcription-card/subcription-card.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -23,7 +24,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./me.component.scss'],
 })
 export class MeComponent implements OnInit, OnDestroy {
-  user: any = {};
+  user: UserDto = {
+    id: 0,
+    username: '',
+    email: '',
+    createdAt:'',
+    subscriptions: [],
+  }; 
   subscriptions: SubscriptionDto[] = [];
   showPassword: boolean = false;
   private subscriptionsList = new Subscription(); // Gestion des abonnements
@@ -41,9 +48,9 @@ export class MeComponent implements OnInit, OnDestroy {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
       // Récupérer le profil utilisateur
-      const userSub = this.http.get('/api/users/me', { headers }).subscribe({
-        next: (data) => {
-          this.user = data;
+      const userSub = this.http.get<UserDto>('/api/users/me', { headers }).subscribe({
+        next: (data: UserDto) => {
+          this.user = data; // Assurez-vous que `data` correspond bien à l'interface `UserDto`.
         },
         error: (error) => {
           console.error(
@@ -52,6 +59,7 @@ export class MeComponent implements OnInit, OnDestroy {
           );
         },
       });
+      
 
       // Récupérer les abonnements de l'utilisateur
       const subsSub = this.http

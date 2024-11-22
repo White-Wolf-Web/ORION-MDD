@@ -6,6 +6,7 @@ import { ButtonComponent } from 'src/app/components/button/button.component';
 import { LogoComponent } from 'src/app/components/logo/logo.component';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { LoginResponse } from 'src/app/models/login-response.model';
 
 @Component({
   selector: 'app-login',
@@ -29,13 +30,14 @@ export class LoginComponent {
 
   onSubmit() {
     const loginData = { identifier: this.identifier, password: this.password };
-    this.http.post('/api/auth/login', loginData).subscribe(
-      (response: any) => {
+
+    this.http.post<LoginResponse>('/api/auth/login', loginData).subscribe(
+      (response) => {
         console.log('Login successful:', response);
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.token); 
         this.router.navigate(['/articles']);
       },
-      (error) => {
+      (error: Error) => {
         console.error('Login failed:', error);
         alert(
           'Échec de la connexion. Veuillez vérifier vos informations d’identification.'
@@ -44,8 +46,10 @@ export class LoginComponent {
     );
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.isSmallScreen = event.target.innerWidth < 768;
-  }
+// Gestion de la redimensionnement de la fenêtre
+@HostListener('window:resize', ['$event'])
+onResize(event: Event): void {
+  const target = event.target as Window;
+  this.isSmallScreen = target.innerWidth < 768;
+}
 }

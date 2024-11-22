@@ -36,8 +36,10 @@ export class RegisterComponent {
     );
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.isSmallScreen = event.target.innerWidth < 768;
-  }
+// Gestion de la redimensionnement de la fenêtre
+@HostListener('window:resize', ['$event'])
+onResize(event: Event): void {
+  const target = event.target as Window;
+  this.isSmallScreen = target.innerWidth < 768;
+}
 }

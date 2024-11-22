@@ -23,9 +23,9 @@ export class SubscriptionService {
     return this.http.get<SubscriptionDto[]>(`${this.apiUrl}/topics`, { headers });
   }
 
-  subscribeToTopic(topicId: number): Observable<any> {
+  subscribeToTopic(topicId: number): Observable<void> {
     const headers = this.createAuthHeaders();
-    return this.http.post(`${this.apiUrl}/users/topics/${topicId}`, {}, { headers });
+    return this.http.post<void>(`${this.apiUrl}/users/topics/${topicId}`, {}, { headers });
   }
 
   getTopics(): Observable<{ id: number; name: string }[]> {
@@ -52,11 +52,10 @@ export class SubscriptionService {
   }
 
 
-  unsubscribeFromTopic(subscriptionId: number): Observable<any> {
+  unsubscribeFromTopic(subscriptionId: number): Observable<void> {
     const headers = this.createAuthHeaders();
-    return this.http.delete(`${this.apiUrl}/users/subscriptions/${subscriptionId}`, {
+    return this.http.delete<void>(`${this.apiUrl}/users/subscriptions/${subscriptionId}`, {
         headers,
-        responseType: 'text' 
     });
 }
 

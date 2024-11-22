@@ -27,7 +27,7 @@ public class Topic {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(length = 500) // Exemple de limite de caractères pour la description
+    @Column(length = 500)
     private String description;
 
     @ManyToMany(mappedBy = "subscriptions")
