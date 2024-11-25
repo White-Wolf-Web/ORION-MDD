@@ -16,6 +16,8 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
+
+    // Récupère tous les topics depuis la base de données grâce au repository.
     @Override
     public List<TopicDTO> getAllTopics() {
         return topicRepository.findAll().stream()

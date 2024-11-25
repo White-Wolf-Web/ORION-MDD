@@ -25,24 +25,29 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registerUser(UserRegistrationDTO registrationDTO) {
+
+        // Vérifie si l'email est déjà utilisé par un autre utilisateur
         if (userRepository.existsByEmail(registrationDTO.getEmail())) {
             throw new IllegalArgumentException("Cet email est déjà utilisé");
         }
-
+        // Vérifie si le nom d'utilisateur est déjà pris
         if (userRepository.existsByUsername(registrationDTO.getUsername())) {
             throw new IllegalArgumentException("Ce nom d'utilisateur est déjà pris");
         }
 
+        // Crée un nouvel utilisateur avec les données du formulaire d'inscription
         User user = new User();
         user.setEmail(registrationDTO.getEmail());
         user.setUsername(registrationDTO.getUsername());
         user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 
-        userRepository.save(user);
+        userRepository.save(user);   // Sauvegarde l'utilisateur dans la base de données
     }
 
     @Override
     public String loginUser(UserLoginDTO loginDTO) {
+
+        // Récupère l'utilisateur par email ou nom d'utilisateur
         User user = userRepository.findByEmail(loginDTO.getIdentifier())
                 .orElseGet(() -> userRepository.findByUsername(loginDTO.getIdentifier())
                         .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé")));

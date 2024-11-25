@@ -21,10 +21,10 @@ import { Router } from '@angular/router';
   standalone: true,
 })
 export class ArticleListComponent implements OnInit, OnDestroy {
-  articles: ArticleDto[] = [];
-  isAscending: boolean = true;
-  subscribedTopics: number[] = [];
-  private subscriptions = new Subscription();
+  articles: ArticleDto[] = [];                     // Liste des articles affichés.
+  isAscending: boolean = true;                     // Indique si les articles sont triés par date croissante ou décroissante.
+  subscribedTopics: number[] = [];                 // Liste des IDs des thèmes auxquels l'utilisateur est abonné.
+  private subscriptions = new Subscription();      // Gère tous les abonnements
 
   constructor(
     private articleService: ArticleService,
@@ -69,6 +69,7 @@ export class ArticleListComponent implements OnInit, OnDestroy {
                 return false; // Exclut les articles sans topic
               }
 
+              // Vérifie si l'article appartient à un thème auquel l'utilisateur est abonné.
               const match = topicNames.includes(articleTopicName);
               console.log(
                 `Article ${article.id} avec topic '${articleTopicName}' correspond :`,
@@ -114,6 +115,7 @@ export class ArticleListComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Émet un événement lorsque les articles sont triés.
   @Output() sort = new EventEmitter<boolean>();
 
   onSort() {

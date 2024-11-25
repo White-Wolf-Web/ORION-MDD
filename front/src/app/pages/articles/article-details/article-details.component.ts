@@ -19,11 +19,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './article-details.component.html',
 })
 export class ArticleDetailsComponent implements OnInit, OnDestroy {
-  article: ArticleDto | undefined;
-  articleId!: number; 
-  comments: CommentDto[] = [];
-  newComment: string = '';
-  private subscriptionsList = new Subscription(); 
+  article: ArticleDto | undefined;               // Variable pour stocker les informations de l'article affiché.
+  articleId!: number;                            // Identifiant unique de l'article récupéré depuis l'URL.
+  comments: CommentDto[] = [];                   // Liste des commentaires associés à l'article.
+  newComment: string = '';                       // Contenu du nouveau commentaire que l'utilisateur veut ajouter.
+  private subscriptionsList = new Subscription();// Gestionnaire pour suivre et annuler les abonnements
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +62,7 @@ if (id) {
 }
   }
 
+  // Charge les commentaires liés à l'article.
   loadComments(articleId: string) {
     this.commentService.getCommentsByArticleId(articleId).subscribe({
       next: (data) => (this.comments = data),
@@ -69,10 +70,11 @@ if (id) {
     });
   }
 
+  // Ajoute un commentaire à l'article.
   submitComment() {
     if (!this.newComment.trim()) return;
 
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id');    // Récupère l'ID de l'article depuis l'URL.
     if (id) {
       this.commentService.addComment(id, this.newComment).subscribe({
         next: () => {
@@ -83,9 +85,10 @@ if (id) {
       });
     }
   }
+  
   // Nettoyer les abonnements lors de la destruction du composant
   ngOnDestroy() {
-    this.subscriptionsList.unsubscribe(); // Annuler tous les abonnements
+    this.subscriptionsList.unsubscribe(); 
     console.log('Tous les abonnements dans ArticleDetailsComponent ont été annulés.');
   }
 }

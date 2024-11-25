@@ -72,10 +72,6 @@ public class UsersController {
     }
 
 
-
-
-
-
     @Operation(summary = "S'abonner à un thème")
     @PostMapping("/topics/{topicId}")
     public ResponseEntity<?> subscribeToTopic(@PathVariable("topicId") Long topicId) {
@@ -92,7 +88,9 @@ public class UsersController {
     public ResponseEntity<?> unsubscribeFromTopic(@PathVariable("topicId") Long topicId) {
         try {
             userService.unsubscribeFromTopic(topicId);
-            return ResponseEntity.ok("Abonnement supprimé avec succès.");
+            return ResponseEntity.ok(Map.of("message", "Abonnement supprimé avec succès."));
+
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

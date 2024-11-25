@@ -15,24 +15,27 @@ import { Subscription } from 'rxjs';
   templateUrl: './subscription-list.component.html',
 })
 export class SubscriptionListComponent implements OnInit, OnDestroy  {
-  subscriptions: SubscriptionDto[] = [];
-  private subscriptionsList = new Subscription(); // Gestionnaire d'abonnements
+  subscriptions: SubscriptionDto[] = [];              // Tableau pour stocker les abonnements récupérés depuis le back-end.
+  private subscriptionsList = new Subscription();     // Objet pour gérer les abonnements
 
   constructor(
     private subscriptionService: SubscriptionService,
     private router: Router
   ) {}
 
+  // Appelle une méthode pour récupérer les abonnements des l'initialisation.
   ngOnInit() {
     this.getSubscriptions();
   }
 
+   // Méthode pour récupérer tous les abonnements
   getSubscriptions() {
     const token = localStorage.getItem('token');
 
     if (token) {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
+      // Appelle le service pour récupérer les abonnements.
       this.subscriptionService.getAllSubscriptions().subscribe(
         (data: SubscriptionDto[]) => {
           this.subscriptions = data;

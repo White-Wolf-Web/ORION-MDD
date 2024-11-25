@@ -8,9 +8,4 @@ import java.util.List;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-    List<Article> findByTopicId(Long topicId);
-
-    List<Article> findByAuthorId(Long authorId);
-
-    List<Article> findByTopicIdOrderByCreatedAtDesc(Long topicId);
 }

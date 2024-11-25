@@ -22,19 +22,22 @@ import { LoginResponse } from 'src/app/models/login-response.model';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  isSmallScreen = window.innerWidth < 768;
-  identifier: string = '';
-  password: string = '';
+  isSmallScreen = window.innerWidth < 768;  // Détecte si l'écran est petit 
+  identifier: string = '';                  // Champ pour capturer l'identifiant (email ou nom).
+  password: string = '';                    // Champ pour capturer le mot de passe de l'utilisateur.
 
   constructor(private http: HttpClient, private router: Router) {}
 
+ // Méthode appelée lors de la soumission du formulaire de connexion.
+   //Elle envoie une requête POST au serveur avec les informations d'identification de l'utilisateur.
+   
   onSubmit() {
-    const loginData = { identifier: this.identifier, password: this.password };
+    const loginData = { identifier: this.identifier, password: this.password }; // Préparation des données de connexion à envoyer au serveur.
 
     this.http.post<LoginResponse>('/api/auth/login', loginData).subscribe(
       (response) => {
         console.log('Login successful:', response);
-        localStorage.setItem('token', response.token); 
+        localStorage.setItem('token', response.token);     // Stocke le jeton JWT dans le localStorage
         this.router.navigate(['/articles']);
       },
       (error: Error) => {

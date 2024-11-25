@@ -18,16 +18,16 @@ export class UnsubscriptionCardComponent {
   constructor(private subscriptionService: SubscriptionService) {}
 
   onUnsubscribe() {
-    this.subscriptionService
-      .unsubscribeFromTopic(this.subscriptionId)
-      .subscribe(
-        (response) => {
-          console.log(response); 
-          this.unsubscribed.emit(this.subscriptionId); // Émet l'ID pour mettre à jour le composant parent
-        },
-        (error) => {
-          console.error('Échec du désabonnement:', error);
-        }
-      );
+    this.subscriptionService.unsubscribeFromTopic(this.subscriptionId).subscribe(
+      (response) => {
+        alert(response.message); 
+        this.unsubscribed.emit(this.subscriptionId);
+      },
+      (error) => {
+        console.error('Échec du désabonnement:', error);
+      }
+    );
+    
+    
   }
 }

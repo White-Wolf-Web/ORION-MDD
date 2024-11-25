@@ -32,18 +32,9 @@ public class CommentServiceImpl implements CommentService {
     private UserRepository userRepository;
 
     @Override
-    public List<CommentDTO> getAllComments(Long articleId) {
-        List<Comment> comments = commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
-        return comments.stream().map(comment -> new CommentDTO(
-                comment.getId(),
-                comment.getContent(),
-                comment.getAuthor().getUsername(),
-                comment.getCreatedAt()
-        )).collect(Collectors.toList());
-    }
-
-    @Override
     public void addComment(Long articleId, CommentCreationDTO commentDTO) {
+
+        // Récupérer l'article correspondant à l'ID fourni. Si l'article n'existe pas, une exception est levée.
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("Article non trouvé"));
 
@@ -60,7 +51,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getCommentsByArticleId(Long articleId) {
+
+        // Récupérer tous les commentaires associés à un article spécifique, triés par date de création.
         List<Comment> comments = commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
+
+        // Convertir chaque commentaire en objet DTO pour renvoyer uniquement les informations nécessaires.
         return comments.stream().map(comment -> new CommentDTO(
                 comment.getId(),
                 comment.getContent(),
@@ -69,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
         )).collect(Collectors.toList());
     }
 
-
+    // Méthode privée pour récupérer l'utilisateur actuellement connecté.
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserEmail = authentication.getName();

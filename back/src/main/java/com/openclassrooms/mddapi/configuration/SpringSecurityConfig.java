@@ -25,49 +25,57 @@ public class SpringSecurityConfig {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService,
-                                JwtAuthenticationEntryPoint unauthorizedHandler,
-                                JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.unauthorizedHandler = unauthorizedHandler;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.customUserDetailsService = customUserDetailsService;    // Gère les détails des utilisateurs.
+        this.unauthorizedHandler = unauthorizedHandler;              // Gère les erreurs d'authentification.
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;      // C'est un filtre personnalisé pour vérifier les JWT.
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Désactiver CSRF et configurer la gestion des sessions
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
+                // Les sessions sont configurées comme sans état car l'application utilise des tokens JWT.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Configurer la gestion des erreurs d'authentification.
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
 
-        // Configurer les autorisations
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/articles/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/users/me/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "api/topics").authenticated()
-                .anyRequest().authenticated()
-        );
+        // Configurer les autorisations d'accès pour différentes requêtes. elles sont définies par chemin et méthode HTTP.
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login")
+                .permitAll().requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                .permitAll().requestMatchers(HttpMethod.GET, "/api/articles/**")
+                .authenticated().requestMatchers(HttpMethod.GET, "/api/users/me/**")
+                .authenticated().requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**")
+                .authenticated().requestMatchers(HttpMethod.GET, "api/topics")
+                .authenticated().anyRequest().authenticated());
 
-        // Ajouter le filtre JWT
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // Ajouter le filtre JWT. JwtAuthenticationFilter est ajouté pour valider les tokens avant de traiter les requêtes.
 
+
+        // Retourner la configuration de la chaîne de filtres de sécurité.
         return http.build();
     }
 
+    // On fournit un encodeur de mots de passe utilisant BCrypt.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    // Configurer le gestionnaire d'authentification.
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+
+        // `customUserDetailsService` est utilisé pour récupérer les infos des utilisateurs depuis la base de données.
+        authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+
+                // `passwordEncoder()` permet de vérifier les mots de passe
+                .passwordEncoder(passwordEncoder());
+
+        // On crée et retourne le gestionnaire d'authentification.
         return authenticationManagerBuilder.build();
     }
 }

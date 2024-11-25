@@ -24,6 +24,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./me.component.scss'],
 })
 export class MeComponent implements OnInit, OnDestroy {
+
+    // Un objet utilisateur initialisé par défaut, avec une structure conforme à UserDto
   user: UserDto = {
     id: 0,
     username: '',
@@ -31,26 +33,27 @@ export class MeComponent implements OnInit, OnDestroy {
     createdAt:'',
     subscriptions: [],
   }; 
-  subscriptions: SubscriptionDto[] = [];
-  showPassword: boolean = false;
-  private subscriptionsList = new Subscription(); // Gestion des abonnements
+  subscriptions: SubscriptionDto[] = [];              // Liste des abonnements de l'utilisateur.
+  showPassword: boolean = false;                      // Indique si le mot de passe est visible ou non.
+  private subscriptionsList = new Subscription();     // Gestion des abonnements
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit() {
-    this.getUserData();
+  // Hook appelé lors de l'initialisation du composant.
+  ngOnInit() {   
+    this.getUserData();      // Charge les données de l'utilisateur.
   }
 
+  // Charge les informations de l'utilisateur et ses abonnements.
   getUserData() {
     const token = localStorage.getItem('token');
 
     if (token) {
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);         // Crée des en-têtes avec le token 
 
-      // Récupérer le profil utilisateur
-      const userSub = this.http.get<UserDto>('/api/users/me', { headers }).subscribe({
+      const userSub = this.http.get<UserDto>('/api/users/me', { headers }).subscribe({   // Récupérer le profil utilisateur
         next: (data: UserDto) => {
-          this.user = data; // Assurez-vous que `data` correspond bien à l'interface `UserDto`.
+          this.user = data;                                                              // Met à jour les informations utilisateur.
         },
         error: (error) => {
           console.error(
@@ -66,7 +69,7 @@ export class MeComponent implements OnInit, OnDestroy {
         .get<SubscriptionDto[]>('/api/users/me/subscriptions', { headers })
         .subscribe({
           next: (data) => {
-            this.subscriptions = data;
+            this.subscriptions = data;                                         // Met à jour la liste des abonnements.
           },
           error: (error) => {
             console.error(
@@ -76,7 +79,7 @@ export class MeComponent implements OnInit, OnDestroy {
           },
         });
 
-      // Ajouter les abonnements aux subscriptionsList
+       // Ajoute les abonnements aux observables pour pouvoir les gérer plus tard.
       this.subscriptionsList.add(userSub);
       this.subscriptionsList.add(subsSub);
     } else {
@@ -108,7 +111,7 @@ export class MeComponent implements OnInit, OnDestroy {
         console.error('Erreur lors de la mise à jour du profil:', error),
     });
 
-    this.subscriptionsList.add(updateSub); // Ajouter à la liste des abonnements
+    this.subscriptionsList.add(updateSub);      // Ajouter à la liste des abonnements
   }
 
   // Gère le désabonnement
@@ -125,8 +128,9 @@ export class MeComponent implements OnInit, OnDestroy {
     console.log('Utilisateur déconnecté');
   }
 
+  // Hook appelé lorsque le composant est détruit.
   ngOnDestroy() {
-    this.subscriptionsList.unsubscribe(); // Annuler tous les abonnements
+    this.subscriptionsList.unsubscribe();       // Annuler tous les abonnements pour éviter les fuites de mémoires
     console.log('Tous les abonnements dans MeComponent ont été annulés.');
   }
 }

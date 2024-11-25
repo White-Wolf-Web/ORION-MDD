@@ -17,14 +17,16 @@ import { Subscription } from 'rxjs';
 })
 export class ArticleCreateComponent implements OnInit, OnDestroy {
   isSmallScreen = window.innerWidth < 768;
+
+   // Récupère le nom d'utilisateur stocké localement pour l'utiliser comme auteur de l'article.
   article = {
     title: '',
     content: '',
     topicId: 1,
     authorUsername: localStorage.getItem('username') || '', 
   };
-  topics: { id: number; name: string }[] = [];
-  private subscriptionsList = new Subscription(); // Gestion des abonnements
+  topics: { id: number; name: string }[] = [];        // Liste des sujets (topics) que l'utilisateur peut sélectionner pour son article.
+  private subscriptionsList = new Subscription();     // Une "boîte" pour garder une trace des abonnements 
 
   constructor(
     private articleService: ArticleService,
@@ -40,11 +42,13 @@ export class ArticleCreateComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
     }
     
+    // Récupère les sujets (topics) auxquels l'utilisateur est abonné.
     this.subscriptionService.getUserSubscriptions().subscribe((data: { id: number; name: string }[]) => {
       this.topics = data;
     });
   }
 
+  // Lorsqu'on clique sur le bouton "Créer l'article".
   onSubmit() {
     this.articleService.createArticle(this.article).subscribe(
       () => {
