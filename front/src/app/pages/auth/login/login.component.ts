@@ -38,7 +38,7 @@ export class LoginComponent {
       (response) => {
         console.log('Login successful:', response);
         localStorage.setItem('token', response.token);     // Stocke le jeton JWT dans le localStorage
-        this.router.navigate(['/articles']);
+        this.router.navigate(['/me']);
       },
       (error: Error) => {
         console.error('Login failed:', error);

@@ -23,35 +23,33 @@ public class SpringSecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.customUserDetailsService = customUserDetailsService;    // Gère les détails des utilisateurs.
         this.unauthorizedHandler = unauthorizedHandler;              // Gère les erreurs d'authentification.
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;      // C'est un filtre personnalisé pour vérifier les JWT.
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Désactiver CSRF et configurer la gestion des sessions
         http.csrf(AbstractHttpConfigurer::disable)
+
                 // Les sessions sont configurées comme sans état car l'application utilise des tokens JWT.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 // Configurer la gestion des erreurs d'authentification.
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler));
 
         // Configurer les autorisations d'accès pour différentes requêtes. elles sont définies par chemin et méthode HTTP.
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login")
-                .permitAll().requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
-                .permitAll().requestMatchers(HttpMethod.GET, "/api/articles/**")
-                .authenticated().requestMatchers(HttpMethod.GET, "/api/users/me/**")
-                .authenticated().requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**")
-                .authenticated().requestMatchers(HttpMethod.GET, "api/topics")
-                .authenticated().anyRequest().authenticated());
-
-        // Ajouter le filtre JWT. JwtAuthenticationFilter est ajouté pour valider les tokens avant de traiter les requêtes.
-
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/articles/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/users/me/**").authenticated().
+                requestMatchers(HttpMethod.GET, "/api/users/subscriptions/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "api/topics").authenticated()
+                .anyRequest().authenticated());
 
         // Retourner la configuration de la chaîne de filtres de sécurité.
         return http.build();
